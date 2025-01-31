@@ -39,6 +39,9 @@ struct ReadTabView: View {
                     Text(readingPlan.description)
                     Text(readingPlan.updateURL)
                     Text("\(readingPlan.version)")
+                    ForEach(readingPlan.days, id: \.self) { dayPlan in
+                        Text(dayPlan.date.description)
+                    }
                 }
             }
             

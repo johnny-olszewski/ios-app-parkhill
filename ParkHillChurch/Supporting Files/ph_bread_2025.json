@@ -3,4 +3,12 @@
   "description": "A year praying through the whole bible in unity.",
   "update_url": "https://www.parkhillsd.church/update",
   "version": 1.0,
+  "days": [
+      {
+          "date": "2025-01-01"
+      },
+      {
+          "date": "2025-01-02"
+      },
+  ]
 }

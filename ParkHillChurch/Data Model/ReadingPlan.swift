@@ -7,17 +7,19 @@
 
 import Foundation
 
-struct ReadingPlan: Codable {
+struct ReadingPlan: Codable, Hashable {
     let name: String
     let description: String
     let updateURL: String
     let version: Double
-
+    let days: [PlanDay]
+    
     enum CodingKeys: String, CodingKey {
         case name
         case description
         case updateURL = "update_url"
         case version
+        case days
     }
     
     static func initFromJson(fileName: String) -> ReadingPlan? {
