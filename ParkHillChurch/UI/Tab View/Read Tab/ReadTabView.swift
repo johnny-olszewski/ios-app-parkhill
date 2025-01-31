@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ReadTabView: View {
     
-    let availableSections: [Section] = [.read, .bread]
-    
     @State private var selectedSection: Section = .bread
+    
+    let viewModel: ReadTabViewModel = .init()
     
     var body: some View {
         NavigationStack {
@@ -28,8 +28,17 @@ struct ReadTabView: View {
         
         VStack {
             HStack {
-                ForEach(availableSections) { section in
+                ForEach(viewModel.availableSections) { section in
                     pickerButton(for: section)
+                }
+            }
+            
+            if let readingPlan = viewModel.readingPlanManager.readingPlan {
+                VStack(alignment: .leading) {
+                    Text(readingPlan.name)
+                    Text(readingPlan.description)
+                    Text(readingPlan.updateURL)
+                    Text("\(readingPlan.version)")
                 }
             }
             
