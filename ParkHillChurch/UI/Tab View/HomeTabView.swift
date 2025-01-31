@@ -22,11 +22,8 @@ struct HomeTabView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
+                    ProfileButton {
                         isShowingProfileSheet.toggle()
-                    } label: {
-                        Image(systemName: "person.circle")
-                            .font(.system(size: 18))
                     }
                 }
             }
