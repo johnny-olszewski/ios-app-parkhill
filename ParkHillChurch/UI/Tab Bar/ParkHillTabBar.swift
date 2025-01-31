@@ -11,7 +11,7 @@ struct ParkHillTabBar: View {
     
     @Binding var selectedTab: TabType
     
-    let tabs: [TabType] = [.home, .read, .community, .more]
+    let tabs: [TabType] = [.home, .read, .watch, .more]
     
     var body: some View {
         Grid {

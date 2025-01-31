@@ -11,14 +11,14 @@ import SwiftUI
 enum TabType {
     case home
     case read
-    case community
+    case watch
     case more
     
     var tabBarTitle: String {
         switch self {
         case .home: "Home"
         case .read: "Read"
-        case .community: "Community"
+        case .watch: "Watch"
         case .more: "More"
         }
     }
@@ -27,7 +27,7 @@ enum TabType {
         switch self {
             case .home: "house"
             case .read: "book"
-            case .community: "person.3"
+            case .watch: "playpause"
             case .more: "ellipsis"
         }
     }
@@ -37,7 +37,7 @@ enum TabType {
         switch self {
             case .home: HomeTabView()
             case .read: ReadTabView()
-            case .community: CommunityTabView()
+            case .watch: CommunityTabView()
             case .more: MoreTabView()
         }
     }

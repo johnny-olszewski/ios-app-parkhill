@@ -21,6 +21,11 @@ struct HomeTabView: View {
                 content
             }
             .toolbar {
+                
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    SectionSelector()
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     ProfileButton {
                         isShowingProfileSheet.toggle()
