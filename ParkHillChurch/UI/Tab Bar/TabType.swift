@@ -37,7 +37,7 @@ enum TabType {
         switch self {
             case .home: HomeTabView()
             case .read: ReadTabView()
-            case .watch: CommunityTabView()
+            case .watch: WatchTabView()
             case .more: MoreTabView()
         }
     }
