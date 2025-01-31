@@ -11,7 +11,7 @@ struct ReadTabView: View {
     
     let availableSections: [Section] = [.read, .bread]
     
-    @State private var selectedSection: Section = .read
+    @State private var selectedSection: Section = .bread
     
     var body: some View {
         NavigationStack {
@@ -25,6 +25,7 @@ struct ReadTabView: View {
     }
     
     @ViewBuilder var content: some View {
+        
         VStack {
             HStack {
                 ForEach(availableSections) { section in
@@ -32,35 +33,36 @@ struct ReadTabView: View {
                 }
             }
             
-            ScrollView {
-                LazyVStack {
-                    ForEach(0..<1000) { index in
-                        VStack(alignment: .leading) {
-                            NavigationLink(value: index) {
-                                Text("Item \(index)".uppercased())
-                                    .fontWeight(.thin)
-                                    .foregroundStyle(.primaryText)
-                            }
-                            Divider()
-                                .padding(.horizontal)
-                        }
-                        .padding(.horizontal)
-                    }
-                }
-                .padding(.top)
-            }
-            .mask {
-                Rectangle()
-                    .fill(LinearGradient(colors: [.black, .clear], startPoint: .init(x: 0.5, y: 0.1), endPoint: .top))
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Image(systemName: "person.circle")
-                        .font(.system(size: 18))
-                }
-            }
-            .ignoresSafeArea(edges: [.bottom])
+            numberList
         }
+    }
+    
+    @ViewBuilder
+    var numberList: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(0..<1000) { index in
+                    VStack(alignment: .leading) {
+                        NavigationLink(value: index) {
+                            Text("Item \(index)".uppercased())
+                                .fontWeight(.thin)
+                                .foregroundStyle(.primaryText)
+                        }
+                        Divider()
+                            .padding(.horizontal)
+                    }
+                    .padding(.horizontal)
+                }
+            }
+            .padding(.top)
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Image(systemName: "person.circle")
+                    .font(.system(size: 18))
+            }
+        }
+        .ignoresSafeArea(edges: [.bottom])
     }
     
     @ViewBuilder
@@ -85,4 +87,3 @@ struct ReadTabView: View {
 #Preview {
     ReadTabView()
 }
-

@@ -31,11 +31,6 @@ struct SectionSelector: View {
         }
         .scrollPosition(id: $selectedSection)
         .scrollIndicators(.hidden)
-        .mask {
-            Rectangle()
-                .fill(LinearGradient(colors: [.black, .clear], startPoint: .init(x: 0.8, y: 0.5), endPoint: .trailing))
-            
-        }
     }
 }
 

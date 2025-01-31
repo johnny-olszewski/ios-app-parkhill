@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ParkHillTabContainer: View {
     
-    @State private var selectedTab: TabType = .home
+    @State private var selectedTab: TabType = .read
     
     init() {}
     
