@@ -9,9 +9,9 @@ import SwiftUI
 
 struct SectionSelector: View {
     
-    let sections: [HomeSectionType] = [.home, .generosity, .serving, .community, .about]
+    let sections: [HomeTabView.Section] = [.home, .generosity, .serving, .community, .about]
     
-    @State var selectedSection: HomeSectionType.ID?
+    @State var selectedSection: HomeTabView.Section.ID?
     
     var body: some View {
         ScrollView(.horizontal) {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MoreTabView: View {
     
-    var availableListItems: [MoreListItem] = [.a, .b, .c, .d, .e]
+    var availableListItems: [Item] = [.a, .b, .c, .d, .e]
     
     var body: some View {
         NavigationStack {
@@ -25,7 +25,7 @@ struct MoreTabView: View {
                         .font(.system(size: 18))
                 }
             }
-            .navigationDestination(for: MoreListItem.self) { listItem in
+            .navigationDestination(for: Item.self) { listItem in
                 Text("\(listItem.rawValue) page")
             }
         }
