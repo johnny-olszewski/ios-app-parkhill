@@ -21,6 +21,9 @@ struct ReadTabView: View {
                 
                 content
             }
+            .navigationDestination(for: PlanDay.self) { day in
+                Text(day.description)
+            }
         }
     }
     
@@ -34,30 +37,20 @@ struct ReadTabView: View {
             }
             
             if let readingPlan = viewModel.readingPlanManager.readingPlan {
-                VStack(alignment: .leading) {
-                    Text(readingPlan.id)
-                    Text(readingPlan.name)
-                    Text(readingPlan.description)
-                    Text(readingPlan.updateURL)
-                    Text("\(readingPlan.version)")
-                    ForEach(readingPlan.days, id: \.self) { dayPlan in
-                        Text("\(dayPlan)")
-                    }
-                }
+                listOf(items: readingPlan.days)
             }
             
-            numberList
         }
     }
     
     @ViewBuilder
-    var numberList: some View {
+    func listOf<T: Listable & Hashable>(items: [T]) -> some View {
         ScrollView {
             LazyVStack {
-                ForEach(0..<1000) { index in
+                ForEach(items, id: \.self) { item in
                     VStack(alignment: .leading) {
-                        NavigationLink(value: index) {
-                            Text("Item \(index)".uppercased())
+                        NavigationLink(value: item) {
+                            Text(item.listTitle.uppercased())
                                 .fontWeight(.thin)
                                 .foregroundStyle(.primaryText)
                         }

@@ -47,3 +47,11 @@ extension PlanDay: CustomStringConvertible {
         return "\(date.formatted(date: .abbreviated, time: .omitted)) \(isCompleted)"
     }
 }
+
+extension PlanDay: Listable {
+    var listTitle: String {
+        return "\(date.formatted(date: .abbreviated, time: .omitted))"
+    }
+}
+
+
