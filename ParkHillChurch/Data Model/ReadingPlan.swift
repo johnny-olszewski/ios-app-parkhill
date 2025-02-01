@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct ReadingPlan: Codable, Hashable {
+struct ReadingPlan: Codable, Identifiable, Hashable {
+    let id: String
     let name: String
     let description: String
     let updateURL: String
@@ -15,6 +16,7 @@ struct ReadingPlan: Codable, Hashable {
     let days: [PlanDay]
     
     enum CodingKeys: String, CodingKey {
+        case id
         case name
         case description
         case updateURL = "update_url"

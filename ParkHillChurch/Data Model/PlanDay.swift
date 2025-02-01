@@ -10,6 +10,7 @@ import Foundation
 
 struct PlanDay: Codable, Hashable {
     let date: Date
+    let isCompleted: Bool = false
     
     enum CodingKeys: String, CodingKey {
         case date
@@ -43,6 +44,6 @@ extension PlanDay: CustomStringConvertible {
     var description: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM dd"
-        return dateFormatter.string(from: date)
+        return "\(date.formatted(date: .abbreviated, time: .omitted)) \(isCompleted)"
     }
 }

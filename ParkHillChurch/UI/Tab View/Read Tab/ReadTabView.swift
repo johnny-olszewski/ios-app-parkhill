@@ -35,12 +35,13 @@ struct ReadTabView: View {
             
             if let readingPlan = viewModel.readingPlanManager.readingPlan {
                 VStack(alignment: .leading) {
+                    Text(readingPlan.id)
                     Text(readingPlan.name)
                     Text(readingPlan.description)
                     Text(readingPlan.updateURL)
                     Text("\(readingPlan.version)")
                     ForEach(readingPlan.days, id: \.self) { dayPlan in
-                        Text(dayPlan.date.description)
+                        Text("\(dayPlan)")
                     }
                 }
             }
