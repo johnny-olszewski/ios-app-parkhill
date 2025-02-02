@@ -10,18 +10,17 @@
       "date": "2025-01-01",
       "passages": [
           {
-              "book": "Genesis"
-          },
-          {
-              "book": "Psalms"
-          },
-          
-          {
-              "book": "1 Samuel"
-          },
-          
-          {
-              "book": "something unknown"
+              "book": "Genesis",
+              "verses": {
+                  "1": {
+                      "start": 1,
+                      "end": 2
+                  },
+                  "2": {
+                      "start": 3,
+                      "end": 4
+                  }
+              }
           },
       ]
     },
