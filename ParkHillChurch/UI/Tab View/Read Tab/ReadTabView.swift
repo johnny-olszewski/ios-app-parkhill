@@ -21,7 +21,7 @@ struct ReadTabView: View {
                 
                 content
             }
-            .navigationDestination(for: PlanDay.self) { day in
+            .navigationDestination(for: ReadingPlan.Day.self) { day in
                 Text(day.description)
             }
         }
