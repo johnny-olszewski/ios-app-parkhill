@@ -13,7 +13,15 @@
               "book": "Genesis"
           },
           {
-              "book": "Psalm"
+              "book": "Psalms"
+          },
+          
+          {
+              "book": "1 Samuel"
+          },
+          
+          {
+              "book": "something unknown"
           },
       ]
     },
