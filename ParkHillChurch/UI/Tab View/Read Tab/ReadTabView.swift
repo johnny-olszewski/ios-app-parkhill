@@ -23,6 +23,7 @@ struct ReadTabView: View {
             }
             .navigationDestination(for: ReadingPlan.Day.self) { day in
                 Text(day.description)
+                Text(day.passages.description)
             }
         }
     }

@@ -13,13 +13,17 @@ extension ReadingPlan {
     struct Day: Codable, Hashable {
         let date: Date
         let isCompleted: Bool = false
+        let passages: [BiblePassage]
         
         enum CodingKeys: String, CodingKey {
             case date
+            case passages
         }
         
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            // Decode Date
             let dateString = try container.decode(String.self, forKey: .date)
             
             let formatter = ISO8601DateFormatter()
@@ -30,6 +34,9 @@ extension ReadingPlan {
             } else {
                 throw DecodingError.dataCorruptedError(forKey: .date, in: container, debugDescription: "Date string does not match expected format")
             }
+            
+            // Decode BiblePassages
+            self.passages = try container.decode([BiblePassage].self, forKey: .passages)
         }
         
         func encode(to encoder: Encoder) throws {
