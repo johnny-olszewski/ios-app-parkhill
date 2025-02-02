@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ReadTabView: View {
     
-    let availableSections: [Section] = [.read, .bread]
-    
     @State private var selectedSection: Section = .bread
+    
+    let viewModel: ReadTabViewModel = .init()
     
     var body: some View {
         NavigationStack {
@@ -21,6 +21,10 @@ struct ReadTabView: View {
                 
                 content
             }
+            .navigationDestination(for: ReadingPlan.Day.self) { day in
+                Text(day.description)
+                Text(day.passages.description)
+            }
         }
     }
     
@@ -28,25 +32,36 @@ struct ReadTabView: View {
         
         VStack {
             HStack {
-                ForEach(availableSections) { section in
+                ForEach(viewModel.availableSections) { section in
                     pickerButton(for: section)
                 }
             }
             
-            numberList
+            if let readingPlan = viewModel.readingPlanManager.readingPlan {
+                listOf(items: readingPlan.days)
+            }
+            
         }
     }
     
     @ViewBuilder
-    var numberList: some View {
+    func listOf<T: Listable & Hashable>(items: [T]) -> some View {
         ScrollView {
             LazyVStack {
-                ForEach(0..<1000) { index in
+                ForEach(items, id: \.self) { item in
                     VStack(alignment: .leading) {
-                        NavigationLink(value: index) {
-                            Text("Item \(index)".uppercased())
-                                .fontWeight(.thin)
-                                .foregroundStyle(.primaryText)
+                        NavigationLink(value: item) {
+                            VStack {
+                                Text(item.listTitle.uppercased())
+                                    .fontWeight(.thin)
+                                    .foregroundStyle(.primaryText)
+                                
+                                if let subTitle = item.listSubtitle {
+                                    Text(subTitle)
+                                        .fontWeight(.light)
+                                        .foregroundStyle(.primaryText)
+                                }
+                            }
                         }
                         Divider()
                             .padding(.horizontal)
