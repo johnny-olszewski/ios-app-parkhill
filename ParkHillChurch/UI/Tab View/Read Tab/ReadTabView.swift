@@ -51,9 +51,17 @@ struct ReadTabView: View {
                 ForEach(items, id: \.self) { item in
                     VStack(alignment: .leading) {
                         NavigationLink(value: item) {
-                            Text(item.listTitle.uppercased())
-                                .fontWeight(.thin)
-                                .foregroundStyle(.primaryText)
+                            VStack {
+                                Text(item.listTitle.uppercased())
+                                    .fontWeight(.thin)
+                                    .foregroundStyle(.primaryText)
+                                
+                                if let subTitle = item.listSubtitle {
+                                    Text(subTitle)
+                                        .fontWeight(.light)
+                                        .foregroundStyle(.primaryText)
+                                }
+                            }
                         }
                         Divider()
                             .padding(.horizontal)

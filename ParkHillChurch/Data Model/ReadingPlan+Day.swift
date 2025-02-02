@@ -62,4 +62,10 @@ extension ReadingPlan.Day: Listable {
     var listTitle: String {
         return "\(date.formatted(date: .abbreviated, time: .omitted))"
     }
+    
+    var listSubtitle: String? {
+        return self.passages.reduce(into: "") { result, passage in
+            result += "\(passage)"
+        }
+    }
 }

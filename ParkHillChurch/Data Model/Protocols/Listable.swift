@@ -10,4 +10,5 @@ import Foundation
 
 protocol Listable: Hashable {
     var listTitle: String { get }
+    var listSubtitle: String? { get }
 }
