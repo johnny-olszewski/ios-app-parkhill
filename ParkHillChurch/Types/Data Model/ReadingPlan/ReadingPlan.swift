@@ -58,10 +58,4 @@ struct ReadingPlan: Codable, Identifiable, Hashable {
     }
 }
 
-extension ReadingPlan {
-    
-    enum PlanType: String, Codable {
-        case bread
-        case unknown
-    }
-}
+

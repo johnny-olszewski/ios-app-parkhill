@@ -49,23 +49,6 @@ extension ReadingPlan {
     }
 }
 
-extension ReadingPlan.Day: CustomStringConvertible {
-    
-    var description: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM dd"
-        return "\(date.formatted(date: .abbreviated, time: .omitted)) \(isCompleted)"
-    }
-}
 
-extension ReadingPlan.Day: Listable {
-    var listTitle: String {
-        return "\(date.formatted(date: .abbreviated, time: .omitted))"
-    }
-    
-    var listSubtitle: String? {
-        return self.passages.reduce(into: "") { result, passage in
-            result += "\(passage)"
-        }
-    }
-}
+
+
