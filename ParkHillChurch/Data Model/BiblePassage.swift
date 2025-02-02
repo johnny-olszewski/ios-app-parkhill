@@ -9,10 +9,12 @@ import Foundation
 
 struct BiblePassage: Codable, Hashable {
     let book: BibleBook
+    let chapters: [Int]?
     let verses: [Int: VerseRange]?
     
     enum CodingKeys: String, CodingKey {
         case book
+        case chapters
         case verses
     }
     
@@ -22,6 +24,8 @@ struct BiblePassage: Codable, Hashable {
         // Decode BiblePassages
         let bookString = try container.decode(String.self, forKey: .book)
         self.book = BibleBook(rawValue: bookString) ?? .unknown
+        
+        self.chapters = try container.decodeIfPresent([Int].self, forKey: .chapters)
         
         self.verses = try container.decodeIfPresent([Int: VerseRange].self, forKey: .verses)
     }
@@ -36,7 +40,18 @@ struct BiblePassage: Codable, Hashable {
 
 extension BiblePassage: CustomStringConvertible {
     var description: String {
+        
+        if chapters == nil, verses == nil {
+            return book.rawValue
+        }
+        
         var result = "\n"
+        
+        if let chapters = self.chapters {
+            for chapter in chapters {
+                result += "\(book.rawValue) \(chapter)\n"
+            }
+        }
         
         if let verses = self.verses {
             for chapter in verses {
