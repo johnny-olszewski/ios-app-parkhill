@@ -25,10 +25,6 @@ struct ReadTabView: View {
                 
                 content
             }
-            .navigationDestination(for: ReadingPlan.Day.self) { day in
-                Text(day.description)
-                Text(day.passages.description)
-            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Image(systemName: "person.circle")

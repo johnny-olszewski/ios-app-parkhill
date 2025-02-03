@@ -17,8 +17,11 @@ extension BreadDay: Listable {
     }
     
     var listSubtitle: String? {
-        return self.passages.reduce(into: "") { result, passage in
-            result += "\(passage)"
-        }
+//        return self.passages.reduce(into: "") { result, passage in
+//            result += "\(passage) "
+//        }
+        
+        let passageStrings: [String] = self.passages.map { "\($0)"}
+        return passageStrings.joined(separator: ", ")
     }
 }

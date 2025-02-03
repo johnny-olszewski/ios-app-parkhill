@@ -35,6 +35,11 @@ struct ReadingPlanView: View {
         .task {
             try? readingPlanManager.loadReadingPlan(with: planId, from: modelContext)
         }
+        .navigationDestination(for: BreadDay.self) { day in
+            Text("\(day.date.formatted(date: .numeric, time: .omitted))")
+            Text(day.passages.description)
+        }
+        
     }
     
     func daysList<T: Listable & Hashable>(items: [T]) -> some View {
@@ -42,14 +47,15 @@ struct ReadingPlanView: View {
             ForEach(items, id: \.self) { item in
                 VStack(alignment: .leading) {
                     NavigationLink(value: item) {
-                        VStack {
+                        VStack(alignment: .leading) {
                             Text(item.listTitle.uppercased())
-                                .fontWeight(.thin)
+                                .font(.system(size: 13, weight: .thin))
                                 .foregroundStyle(.primaryText)
+                                .padding(.vertical, 2)
                             
                             if let subTitle = item.listSubtitle {
                                 Text(subTitle)
-                                    .fontWeight(.light)
+                                    .font(.system(size: 15, weight: .light))
                                     .foregroundStyle(.primaryText)
                             }
                         }
@@ -60,6 +66,7 @@ struct ReadingPlanView: View {
                 .padding(.horizontal)
             }
         }
+        .padding(.bottom, 100)
     }
 }
 

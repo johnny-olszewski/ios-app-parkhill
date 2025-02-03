@@ -15,20 +15,28 @@ extension BiblePassage: CustomStringConvertible {
             return book.rawValue
         }
         
-        var result = "\n"
+        var result = ""
         
         if let chapters = self.chapters {
-            for chapter in chapters {
-                result += "\(book.rawValue) \(chapter)\n"
-            }
+            result += "\(book.rawValue) \(toDashRange(chapters))"
         }
         
         if let verses = self.verses {
             for chapter in verses {
-                result += "\(book.rawValue) \(chapter.key): \(chapter.value)\n"
+                result += "\(book.rawValue) \(chapter.key): \(chapter.value)"
             }
         }
         
         return result
     }
+    
+    private func toDashRange(_ numbers: [Int]) -> String {
+        guard let first = numbers.first, let last = numbers.last else {
+            return ""
+        }
+        // If you just want "1-3", even if they're not consecutive
+        return "\(first)-\(last)"
+    }
 }
+
+
