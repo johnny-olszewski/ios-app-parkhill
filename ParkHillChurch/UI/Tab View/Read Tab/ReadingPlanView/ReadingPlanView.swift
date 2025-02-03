@@ -28,6 +28,8 @@ struct ReadingPlanView: View {
                 Text(plan.name)
                 Text(plan.planDescription)
                 Text(plan.updateURL)
+                
+                daysList(items: plan.days)
             }
         }
         .task {

@@ -55,12 +55,3 @@ struct ReadingPlan: Codable, Identifiable, Hashable {
         }
     }
 }
-
-extension ReadingPlan {
-    enum ReadingPlanError: Error {
-        case invalidJSON
-        case decodingError
-    }
-}
-
-

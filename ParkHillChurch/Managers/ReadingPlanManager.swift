@@ -26,48 +26,11 @@ class ReadingPlanManager {
                 let breadPlan = BreadPlan(readingPlan: loadedPlan)
                 modelContext.insert(breadPlan)
                 
-                do {
-                    try modelContext.save()
-                } catch {
-                    logger.error("Error saving BreadPlan: \(error)")
-                }
+                try modelContext.save()
             default: break
             }
         } catch {
             throw error
         }
-            
-    }
-}
-
-extension Logger {
-    static let readingPlanManager = Logger(subsystem: Bundle.main.bundleIdentifier ?? "ParkHillChurch", category: "ReadingPlanManager")
-}
-
-@Model
-class BreadPlan {
-    
-    @Attribute(.unique) var id: String
-    var name: String
-    var planDescription: String
-    var updateURL: String
-    var version: Double
-    
-    init(id: String, name: String, planDescription: String, updateURL: String, version: Double) {
-        self.id = id
-        self.name = name
-        self.planDescription = planDescription
-        self.updateURL = updateURL
-        self.version = version
-    }
-    
-    init(readingPlan: ReadingPlan) {
-        self.id = readingPlan.id
-        self.name = readingPlan.name
-        self.planDescription = readingPlan.description
-        self.updateURL = readingPlan.updateURL
-        self.version = readingPlan.version
-        
-        print("BreadPlan.init(readingPlan:)")
     }
 }
