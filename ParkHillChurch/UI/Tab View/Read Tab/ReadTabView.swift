@@ -10,7 +10,7 @@ import SwiftUI
 struct ReadTabView: View {
     
     enum Constants {
-        static let bread2025Id: String = "bread_2025"
+        static let bread2025Id: String = "ph_bread_2025"
     }
     
     @State private var selectedSection: Section = .bread
@@ -41,11 +41,7 @@ struct ReadTabView: View {
     @ViewBuilder var content: some View {
         
         VStack {
-            HStack {
-                ForEach(viewModel.availableSections) { section in
-                    pickerButton(for: section)
-                }
-            }
+            SectionPicker
             
             switch selectedSection {
             case .bread:
@@ -53,6 +49,15 @@ struct ReadTabView: View {
                     .ignoresSafeArea(edges: [.bottom])
             case .read:
                 Text("Read Section")
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var SectionPicker: some View {
+        HStack {
+            ForEach(viewModel.availableSections) { section in
+                pickerButton(for: section)
             }
         }
     }

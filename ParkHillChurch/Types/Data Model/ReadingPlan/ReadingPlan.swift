@@ -40,10 +40,9 @@ struct ReadingPlan: Codable, Identifiable, Hashable {
         days = try container.decode([ReadingPlan.Day].self, forKey: .days)
     }
     
-    static func initFromJson(fileName: String) -> ReadingPlan? {
+    static func initFromJson(fileName: String) throws -> ReadingPlan {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
-            print("JSON file not found")
-            return nil
+            throw ReadingPlanError.invalidJSON
         }
         
         do {
@@ -52,9 +51,15 @@ struct ReadingPlan: Codable, Identifiable, Hashable {
             
             return readingPlan
         } catch {
-            print("Decoding error: \(error)")
-            return nil
+            throw ReadingPlanError.decodingError
         }
+    }
+}
+
+extension ReadingPlan {
+    enum ReadingPlanError: Error {
+        case invalidJSON
+        case decodingError
     }
 }
 

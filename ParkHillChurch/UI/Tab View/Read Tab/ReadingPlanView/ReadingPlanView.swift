@@ -6,22 +6,32 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ReadingPlanView: View {
     
     @Environment(\.modelContext) var modelContext
+    @Query var readingPlans: [BreadPlan]
     
-    @StateObject var viewModel: ReadingPlanViewModel
+    let readingPlanManager: ReadingPlanManager = .shared
+    let planId: String
     
     init(planId: String) {
-        _viewModel = StateObject(wrappedValue: ReadingPlanViewModel(planId: planId))
+        self.planId = planId
+        
+        _readingPlans = Query(filter: #Predicate { $0.id == planId} )
     }
     
     var body: some View {
         ScrollView {
-            if let readingPlan = ReadingPlanManager.shared.readingPlan {
-                daysList(items: readingPlan.days)
+            if let plan = readingPlans.first {
+                Text(plan.name)
+                Text(plan.planDescription)
+                Text(plan.updateURL)
             }
+        }
+        .task {
+            try? readingPlanManager.loadReadingPlan(with: planId, from: modelContext)
         }
     }
     
