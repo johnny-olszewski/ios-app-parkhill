@@ -13,6 +13,6 @@ extension ReadingPlan.Day: CustomStringConvertible {
     var description: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM dd"
-        return "\(date.formatted(date: .abbreviated, time: .omitted)) \(isCompleted)"
+        return "\(date.formatted(date: .abbreviated, time: .omitted))"
     }
 }

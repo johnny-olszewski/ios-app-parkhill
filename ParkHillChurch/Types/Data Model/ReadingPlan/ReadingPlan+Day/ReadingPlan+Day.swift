@@ -12,7 +12,6 @@ extension ReadingPlan {
     
     struct Day: Codable, Hashable {
         let date: Date
-        let isCompleted: Bool = false
         let passages: [BiblePassage]
         
         enum CodingKeys: String, CodingKey {
