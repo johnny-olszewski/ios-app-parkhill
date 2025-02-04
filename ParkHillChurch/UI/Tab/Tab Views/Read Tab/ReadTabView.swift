@@ -80,14 +80,14 @@ struct ReadTabView: View {
     }
     
     private func generateViewModel() -> ReadingPlanViewModel {
-        let provider: ReadingPlanProviding
+        let readingPlanManager: ReadingPlanManager
         #if DEBUG
-        provider = debugAppState.isUsingDebugReadingPlanProvider ? DEBUGReadingPlanManager() : ReadingPlanManager()
+        readingPlanManager = debugAppState.isUsingDebugReadingPlanProvider ? DEBUGReadingPlanManager() : ReadingPlanManager()
         #else
-        provider = ReadingPlanManager()
+        readingPlanManager = ReadingPlanManager()
         #endif
         
-        return ReadingPlanViewModel(planId: ParkHillSharedConstants.ReadingPlan.bread2025Id, provider: provider)
+        return ReadingPlanViewModel(planId: ParkHillSharedConstants.ReadingPlan.bread2025Id, readingPlanManager: readingPlanManager)
     }
 }
 

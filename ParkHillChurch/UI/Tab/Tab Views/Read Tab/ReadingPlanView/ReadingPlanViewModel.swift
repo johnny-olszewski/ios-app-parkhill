@@ -12,10 +12,10 @@ import SwiftData
 class ReadingPlanViewModel: ObservableObject {
     
     let planId: String
-    let provider: ReadingPlanProviding
+    let readingPlanManager: ReadingPlanManager
     
-    init(planId: String, provider: ReadingPlanProviding) {
+    init(planId: String, readingPlanManager: ReadingPlanManager) {
         self.planId = planId
-        self.provider = provider
+        self.readingPlanManager = readingPlanManager
     }
 }

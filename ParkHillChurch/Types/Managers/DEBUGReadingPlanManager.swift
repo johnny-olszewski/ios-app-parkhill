@@ -8,10 +8,19 @@
 #if DEBUG
 
 import Foundation
+import SwiftData
 
-class DEBUGReadingPlanManager: ObservableObject {
+class DEBUGReadingPlanManager: ReadingPlanManager {
     
-    init() {}
+    override init() {
+        super.init()
+    }
+    
+    override func loadReadingPlan(with id: String, from modelContext: ModelContext) throws {
+        print("DEBUGReadingPlanManagerloadReadingPlan(with: \(id) from: ModelContext)")
+    }
+    
+    override func fetchReadingPlans(context: ModelContext, planId: String) throws -> [BreadPlan] { [] }
 }
 
 #endif
