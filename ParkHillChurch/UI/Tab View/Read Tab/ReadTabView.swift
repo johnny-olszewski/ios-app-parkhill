@@ -9,21 +9,27 @@ import SwiftUI
 
 struct ReadTabView: View {
     
+    enum Constants {
+        static let bread2025Id: String = "ph_bread_2025"
+    }
+    
     @State private var selectedSection: Section = .bread
     
     let viewModel: ReadTabViewModel = .init()
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack(alignment: .top) {
                 Color.primaryBackground
                     .edgesIgnoringSafeArea(.all)
                 
                 content
             }
-            .navigationDestination(for: ReadingPlan.Day.self) { day in
-                Text(day.description)
-                Text(day.passages.description)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Image(systemName: "person.circle")
+                        .font(.system(size: 18))
+                }
             }
         }
     }
@@ -31,59 +37,31 @@ struct ReadTabView: View {
     @ViewBuilder var content: some View {
         
         VStack {
-            HStack {
-                ForEach(viewModel.availableSections) { section in
-                    pickerButton(for: section)
-                }
-            }
+            SectionPicker
             
-            if let readingPlan = viewModel.readingPlanManager.readingPlan {
-                listOf(items: readingPlan.days)
+            switch selectedSection {
+            case .bread:
+                ReadingPlanView(planId: Constants.bread2025Id)
+                    .ignoresSafeArea(edges: [.bottom])
+            case .read:
+                Text("Read Section")
             }
-            
         }
     }
     
     @ViewBuilder
-    func listOf<T: Listable & Hashable>(items: [T]) -> some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(items, id: \.self) { item in
-                    VStack(alignment: .leading) {
-                        NavigationLink(value: item) {
-                            VStack {
-                                Text(item.listTitle.uppercased())
-                                    .fontWeight(.thin)
-                                    .foregroundStyle(.primaryText)
-                                
-                                if let subTitle = item.listSubtitle {
-                                    Text(subTitle)
-                                        .fontWeight(.light)
-                                        .foregroundStyle(.primaryText)
-                                }
-                            }
-                        }
-                        Divider()
-                            .padding(.horizontal)
-                    }
-                    .padding(.horizontal)
-                }
-            }
-            .padding(.top)
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Image(systemName: "person.circle")
-                    .font(.system(size: 18))
+    var SectionPicker: some View {
+        HStack {
+            ForEach(viewModel.availableSections) { section in
+                pickerButton(for: section)
             }
         }
-        .ignoresSafeArea(edges: [.bottom])
     }
     
     @ViewBuilder
     func pickerButton(for section: Section) -> some View {
         Button {
-            
+            selectedSection = section
         } label: {
             ZStack {
                 Capsule()

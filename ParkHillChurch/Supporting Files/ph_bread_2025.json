@@ -1,5 +1,5 @@
 {
-  "id": "bread_2025",
+  "id": "ph_bread_2025",
   "type": "bread",
   "name": "Park Hill Bread 2025",
   "description": "A year praying through the whole bible in unity.",
@@ -111,7 +111,7 @@
       ]
     },
     {
-      "date": "2025-01-01-09",
+      "date": "2025-01-09",
       "passages": [
           {
               "book": "Genesis",
