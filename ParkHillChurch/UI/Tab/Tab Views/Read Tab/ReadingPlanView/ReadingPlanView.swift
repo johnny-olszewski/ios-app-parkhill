@@ -20,16 +20,13 @@ struct ReadingPlanView: View {
     
     var body: some View {
         ScrollView {
-            if let plan = try? viewModel.readingPlanManager.fetchReadingPlans(context: modelContext, planId: viewModel.planId).first {
+            if let plan = try? viewModel.readingPlanManager.fetchReadingPlans(with: viewModel.planId, from: modelContext) {
                 Text(plan.name)
                 Text(plan.planDescription)
                 Text(plan.updateURL)
                 
                 daysList(items: plan.days)
             }
-        }
-        .task {
-            try? viewModel.readingPlanManager.loadReadingPlan(with: viewModel.planId, from: modelContext)
         }
         .navigationDestination(for: BreadDay.self) { day in
             ReadingPlanDayView(day: day)

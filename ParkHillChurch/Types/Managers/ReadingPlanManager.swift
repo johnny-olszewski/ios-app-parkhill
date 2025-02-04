@@ -18,7 +18,25 @@ class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
     
     // MARK: - ReadingPlanProviding
     
-    func loadReadingPlan(with id: String, from modelContext: ModelContext) throws {
+    func fetchReadingPlans(with id: String, from modelContext: ModelContext) throws -> BreadPlan? {
+        print("ReadingPlanManager.fetchReadingPlan(with: \(id) from: ModelContext)")
+        let descriptor = FetchDescriptor<BreadPlan>(
+            predicate: #Predicate { $0.id == id }
+        )
+        
+        do {
+            let matchingPlans = try modelContext.fetch(descriptor)
+            if matchingPlans.isEmpty {
+                return try loadReadingPlan(with: id, from: modelContext)
+            }
+            return matchingPlans.first
+        } catch {
+            print("ERROR: \(error)")
+            throw error
+        }
+    }
+    
+    func loadReadingPlan(with id: String, from modelContext: ModelContext) throws -> BreadPlan? {
         print("ReadingPlanManager.loadReadingPlan(with: \(id) from: ModelContext)")
         do {
             let loadedPlan = try ReadingPlan.initFromJson(fileName: "ph_bread_2025")
@@ -29,22 +47,15 @@ class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
                 modelContext.insert(breadPlan)
                 
                 try modelContext.save()
+                return breadPlan
             default: break
             }
         } catch {
+            print("ERROR: \(error)")
             throw error
         }
-    }
-    
-    func fetchReadingPlans(context: ModelContext, planId: String) throws -> [BreadPlan] {
-        let descriptor = FetchDescriptor<BreadPlan>(
-            predicate: #Predicate { $0.id == planId }
-        )
-        do {
-            return try context.fetch(descriptor)
-        } catch {
-            throw error
-        }
+        
+        return nil
     }
     
 }

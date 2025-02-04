@@ -11,6 +11,6 @@ import SwiftData
 
 protocol ReadingPlanProviding {
     
-    func fetchReadingPlans(context: ModelContext, planId: String) throws -> [BreadPlan]
-    func loadReadingPlan(with id: String, from modelContext: ModelContext) throws
+    func fetchReadingPlans(with id: String, from modelContext: ModelContext) throws -> BreadPlan?
+    func loadReadingPlan(with id: String, from modelContext: ModelContext) throws -> BreadPlan? 
 }

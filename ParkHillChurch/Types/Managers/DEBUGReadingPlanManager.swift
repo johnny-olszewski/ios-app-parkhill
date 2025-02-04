@@ -16,11 +16,12 @@ class DEBUGReadingPlanManager: ReadingPlanManager {
         super.init()
     }
     
-    override func loadReadingPlan(with id: String, from modelContext: ModelContext) throws {
+    override func loadReadingPlan(with id: String, from modelContext: ModelContext) throws -> BreadPlan?  {
         print("DEBUGReadingPlanManagerloadReadingPlan(with: \(id) from: ModelContext)")
+        return nil
     }
     
-    override func fetchReadingPlans(context: ModelContext, planId: String) throws -> [BreadPlan] { [] }
+    override func fetchReadingPlans(with planId: String, from modelContext: ModelContext) throws -> BreadPlan? { return nil }
 }
 
 #endif
