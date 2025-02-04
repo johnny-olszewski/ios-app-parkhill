@@ -12,11 +12,10 @@ import SwiftUI
 
 class ReadingPlanManager {
     
-    static let shared: ReadingPlanManager = .init()
     let logger = Logger.readingPlanManager
     
-    private init() { }
-    
+    init() { }
+        
     func loadReadingPlan(with id: String, from modelContext: ModelContext) throws {
         do {
             let loadedPlan = try ReadingPlan.initFromJson(fileName: "ph_bread_2025")
@@ -34,3 +33,5 @@ class ReadingPlanManager {
         }
     }
 }
+
+

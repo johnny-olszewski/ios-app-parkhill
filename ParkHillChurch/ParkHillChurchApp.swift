@@ -10,6 +10,11 @@ import SwiftData
 
 @main
 struct ParkHillChurchApp: App {
+    
+    #if DEBUG
+    @State var debugAppState: DEBUGAppState = .init()
+    #endif
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             BreadPlan.self,
@@ -24,9 +29,20 @@ struct ParkHillChurchApp: App {
     }()
 
     var body: some Scene {
+        
         WindowGroup {
             ParkHillTabContainer()
+            #if DEBUG
+                .debugSheet {
+                    DEBUGAppStateView(debugAppState: $debugAppState)
+                }
+                .environment(\.debugAppState, debugAppState)
+            #endif
         }
         .modelContainer(sharedModelContainer)
     }
 }
+
+
+
+

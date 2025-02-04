@@ -9,11 +9,12 @@ import SwiftUI
 
 struct ReadTabView: View {
     
-    enum Constants {
-        static let bread2025Id: String = "ph_bread_2025"
-    }
+    #if DEBUG
+    @Environment(\.debugAppState) private var debugAppState
+    #endif
     
     @State private var selectedSection: Section = .bread
+    @State private var debugProvider: Bool = true
     
     let viewModel: ReadTabViewModel = .init()
     
@@ -37,12 +38,14 @@ struct ReadTabView: View {
     @ViewBuilder var content: some View {
         
         VStack {
+            
             SectionPicker
             
             switch selectedSection {
             case .bread:
-                ReadingPlanView(planId: Constants.bread2025Id)
+                ReadingPlanView(viewModel: generateViewModel())
                     .ignoresSafeArea(edges: [.bottom])
+                
             case .read:
                 Text("Read Section")
             }
@@ -74,6 +77,17 @@ struct ReadTabView: View {
                     .foregroundStyle(selectedSection == section ? Color.primaryBackground : .primaryText)
             }
         }
+    }
+    
+    private func generateViewModel() -> ReadingPlanViewModel {
+        let provider: ReadingPlanProviding
+        #if DEBUG
+        provider = debugAppState.isUsingDebugReadingPlanProvider ? DEBUGReadingPlanManager() : ReadingPlanManager()
+        #else
+        provider = ReadingPlanManager()
+        #endif
+        
+        return ReadingPlanViewModel(planId: ParkHillSharedConstants.ReadingPlan.bread2025Id, provider: provider)
     }
 }
 

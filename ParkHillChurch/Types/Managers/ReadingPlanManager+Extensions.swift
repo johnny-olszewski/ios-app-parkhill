@@ -14,3 +14,9 @@ import SwiftUI
 extension Logger {
     static let readingPlanManager = Logger(subsystem: Bundle.main.bundleIdentifier ?? "ParkHillChurch", category: "ReadingPlanManager")
 }
+
+extension ReadingPlanManager: ReadingPlanProviding {
+    func readingPlan(id: String) -> String {
+        return "production \(id)"
+    }
+}
