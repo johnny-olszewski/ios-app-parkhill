@@ -10,14 +10,16 @@ import SwiftData
 import os
 import SwiftUI
 
-class ReadingPlanManager {
+class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
     
-    static let shared: ReadingPlanManager = .init()
     let logger = Logger.readingPlanManager
     
-    private init() { }
+    init() { }
+    
+    // MARK: - ReadingPlanProviding
     
     func loadReadingPlan(with id: String, from modelContext: ModelContext) throws {
+        print("ReadingPlanManager.loadReadingPlan(with: \(id) from: ModelContext)")
         do {
             let loadedPlan = try ReadingPlan.initFromJson(fileName: "ph_bread_2025")
             
@@ -33,4 +35,18 @@ class ReadingPlanManager {
             throw error
         }
     }
+    
+    func fetchReadingPlans(context: ModelContext, planId: String) throws -> [BreadPlan] {
+        let descriptor = FetchDescriptor<BreadPlan>(
+            predicate: #Predicate { $0.id == planId }
+        )
+        do {
+            return try context.fetch(descriptor)
+        } catch {
+            throw error
+        }
+    }
+    
 }
+
+
