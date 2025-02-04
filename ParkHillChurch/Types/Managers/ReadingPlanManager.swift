@@ -16,22 +16,7 @@ class ReadingPlanManager {
     
     init() { }
         
-    func loadReadingPlan(with id: String, from modelContext: ModelContext) throws {
-        do {
-            let loadedPlan = try ReadingPlan.initFromJson(fileName: "ph_bread_2025")
-            
-            switch loadedPlan.type {
-            case .bread:
-                let breadPlan = BreadPlan(readingPlan: loadedPlan)
-                modelContext.insert(breadPlan)
-                
-                try modelContext.save()
-            default: break
-            }
-        } catch {
-            throw error
-        }
-    }
+    
 }
 
 
