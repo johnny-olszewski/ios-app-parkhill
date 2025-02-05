@@ -89,20 +89,25 @@ class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
             let planData = try JSONSerialization.data(withJSONObject: rawPlan)
             
             // Peek at "type"
-            guard let type = rawPlan["type"] as? String else {
+            guard let type: ReadingPlanType =  .init(rawValue: rawPlan["type"] as? String ?? "unknown") else {
                 continue // skip if missing
             }
             
+            guard let planID = rawPlan["id"] as? String else {
+                continue
+            }
+            
+            decoder.userInfo[.planID] = planID
+            
             // 4) Decode concrete plan
             switch type {
-            case "bread":
+            case .bread:
                 let plan = try decoder.decode(BreadPlan.self, from: planData)
                 results.append(plan)
-            case "daily":
+            case .daily:
                 let plan = try decoder.decode(DailyPlan.self, from: planData)
                 results.append(plan)
-            default:
-                // Unknown type
+            case .unknown:
                 print("Unknown plan type '\(type)'; skipping.")
             }
         }

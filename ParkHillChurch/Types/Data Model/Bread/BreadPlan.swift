@@ -10,18 +10,15 @@ import Foundation
 import SwiftData
 
 @Model
-final class BreadPlan: Decodable, ReadingPlan {
+final class BreadPlan: Decodable, ReadingPlan, Identifiable, Hashable {
     // MARK: - Properties
+    @Attribute(.unique) var id: String
     var type: ReadingPlanType
-    var id: String
     var name: String
-    
-    /// Renamed from `description` to `planDescription`.
     var planDescription: String
-
     var update_url: String?
     var version: Double?
-    var days: [Day]?
+    @Relationship(deleteRule: .cascade, inverse: \Day.plan) var days: [Day]?
 
     // MARK: - Custom (Designated) Init
     init(

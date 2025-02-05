@@ -14,7 +14,8 @@ struct ReadingPlanDayView: View {
     var body: some View {
         HStack {
             VStack {
-                Text("\(day.date)") // Text("\(day.date.formatted(date: .numeric, time: .omitted))") 
+                Text(day.id)
+                Text("\(day.date.formatted(date: .numeric, time: .omitted))")
                 Text(day.passages.description)
             }
             
