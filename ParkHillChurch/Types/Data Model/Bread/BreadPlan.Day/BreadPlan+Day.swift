@@ -59,6 +59,4 @@ extension BreadPlan {
     }
 }
 
-extension CodingUserInfoKey {
-    static let planID = CodingUserInfoKey(rawValue: "planID")!
-}
+

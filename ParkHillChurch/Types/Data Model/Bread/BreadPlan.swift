@@ -74,7 +74,4 @@ final class BreadPlan: Decodable, ReadingPlan, Identifiable, Hashable {
             days: days
         )
     }
-
-    // MARK: - Nested Classes
-    
 }
