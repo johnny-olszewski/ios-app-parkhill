@@ -24,23 +24,35 @@ struct ReadingPlanView: View {
                 Text(readingPlan.name)
                 Text(readingPlan.type.rawValue)
                 
-                if let breadPlan = readingPlan as? BreadPlan, let breadDays = breadPlan.days {
-                    daysList(items: breadDays)
+                if let breadPlan = readingPlan as? BreadPlan, let sections = breadPlan.sections {
+                    ForEach(sections, id: \.self) { section in
+                        if let days = section.days {
+                            Section(section.title) {
+                                daysList(items: days)
+                            }
+                        }
+                    }
                 }
-                
-                // TODO: If Daily Plan
             }
+            
+            
+            
+            //                if let breadPlan = readingPlan as? BreadPlan, let breadDays = breadPlan.days {
+            //                    daysList(items: breadDays)
+            //                }
+            
+            // TODO: If Daily Plan
         }
-        .navigationDestination(for: BreadPlan.Day.self) { day in
-            ReadingPlanDayView(day: day)
-        }
+        //        .navigationDestination(for: BreadPlan.Day.self) { day in
+        //            ReadingPlanDayView(day: day)
+        //        }
     }
     
     func daysList<T: Listable & Hashable>(items: [T]) -> some View {
         LazyVStack {
             ForEach(items, id: \.self) { item in
                 cell(for: item)
-                .padding(.horizontal)
+                    .padding(.horizontal)
             }
         }
         .padding(.bottom, 100)
@@ -75,7 +87,7 @@ struct ReadingPlanView: View {
                         }
                     }
                     
-                   
+                    
                 }
             }
             Divider()
