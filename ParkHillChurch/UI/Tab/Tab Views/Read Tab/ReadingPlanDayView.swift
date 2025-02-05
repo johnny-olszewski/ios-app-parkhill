@@ -19,11 +19,11 @@ struct ReadingPlanDayView: View {
             }
             
             Button {
-                
+                day.isCompleted.toggle()
             } label: {
                 Image(systemName: "checkmark")
                     .foregroundStyle(.primaryText)
-//                    .opacity(day.isCompleted ? 1 : 0.5)
+                    .opacity(day.isCompleted ? 1 : 0.5)
             }
         }
     }

@@ -14,7 +14,7 @@ extension BreadPlan {
     @Model
     final class Day: Decodable {
         var date: String // TODO: Make date
-        // TODO: Add isCompleted
+        var isCompleted: Bool = false
         var passages: [BiblePassage]
         
         init(date: String, passages: [BiblePassage]) {
