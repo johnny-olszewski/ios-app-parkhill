@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ReadingPlanDayView: View {
     
-    var day: BreadDay
+    var day: BreadPlan.Day
     
     var body: some View {
         HStack {
             VStack {
-                Text("\(day.date.formatted(date: .numeric, time: .omitted))")
+                Text("\(day.date)") // Text("\(day.date.formatted(date: .numeric, time: .omitted))") 
                 Text(day.passages.description)
             }
             
@@ -23,7 +23,7 @@ struct ReadingPlanDayView: View {
             } label: {
                 Image(systemName: "checkmark")
                     .foregroundStyle(.primaryText)
-                    .opacity(day.isCompleted ? 1 : 0.5)
+//                    .opacity(day.isCompleted ? 1 : 0.5)
             }
         }
     }

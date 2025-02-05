@@ -11,9 +11,9 @@ import SwiftData
 import os
 import SwiftUI
 
-extension BreadDay: Listable {
+extension BreadPlan.Day: Listable, Hashable {
     var listTitle: String {
-        return "\(date.formatted(date: .abbreviated, time: .omitted))"
+        return date// "\(date.formatted(date: .abbreviated, time: .omitted))"
     }
     
     var listSubtitle: String? {

@@ -2,42 +2,82 @@
 //  BreadPlan.swift
 //  ParkHillChurch
 //
-//  Created by Johnny O on 2/2/25.
+//  Created by Johnny O on 2/4/25.
 //
 
 
 import Foundation
 import SwiftData
-import os
-import SwiftUI
 
 @Model
-class BreadPlan {
-    
-    @Attribute(.unique) var id: String
+final class BreadPlan: Decodable, ReadingPlan {
+    // MARK: - Properties
+    var type: ReadingPlanType
+    var id: String
     var name: String
-    var planDescription: String
-    var updateURL: String
-    var version: Double
-    @Relationship(deleteRule: .cascade, inverse: \BreadDay.plan) var days: [BreadDay]
     
-    init(id: String, name: String, planDescription: String, updateURL: String, version: Double, days: [BreadDay]) {
+    /// Renamed from `description` to `planDescription`.
+    var planDescription: String
+
+    var update_url: String?
+    var version: Double?
+    var days: [Day]?
+
+    // MARK: - Custom (Designated) Init
+    init(
+        type: ReadingPlanType,
+        id: String,
+        name: String,
+        planDescription: String,
+        update_url: String? = nil,
+        version: Double? = nil,
+        days: [Day]? = nil
+    ) {
+        self.type = type
         self.id = id
         self.name = name
         self.planDescription = planDescription
-        self.updateURL = updateURL
+        self.update_url = update_url
         self.version = version
         self.days = days
     }
     
-    init(readingPlan: ReadingPlan) {
-        self.id = readingPlan.id
-        self.name = readingPlan.name
-        self.planDescription = readingPlan.description
-        self.updateURL = readingPlan.updateURL
-        self.version = readingPlan.version
-        self.days = readingPlan.days.map { day in .init(planId: readingPlan.id, planDay: day) }
-        
-        print("BreadPlan.init(readingPlan:)")
+    // MARK: - Decodable Conformance
+    enum CodingKeys: String, CodingKey {
+        case type
+        case id
+        case name
+        case planDescription = "description"  // Map JSON "description" → Swift `planDescription`
+        case update_url
+        case version
+        case days
     }
+
+    convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let typeString      = try container.decode(String.self, forKey: .type)
+        let type = ReadingPlanType(rawValue: typeString) ?? .unknown
+        
+        
+        let id              = try container.decode(String.self, forKey: .id)
+        let name            = try container.decode(String.self, forKey: .name)
+        let planDescription = try container.decode(String.self, forKey: .planDescription)
+        let updateURL       = try container.decodeIfPresent(String.self, forKey: .update_url)
+        let version         = try container.decodeIfPresent(Double.self, forKey: .version)
+        let days            = try container.decodeIfPresent([Day].self, forKey: .days)
+        
+        self.init(
+            type: type,
+            id: id,
+            name: name,
+            planDescription: planDescription,
+            update_url: updateURL,
+            version: version,
+            days: days
+        )
+    }
+
+    // MARK: - Nested Classes
+    
 }

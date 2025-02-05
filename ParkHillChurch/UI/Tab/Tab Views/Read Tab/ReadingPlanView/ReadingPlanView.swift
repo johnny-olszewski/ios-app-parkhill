@@ -20,15 +20,18 @@ struct ReadingPlanView: View {
     
     var body: some View {
         ScrollView {
-            if let plan = try? viewModel.readingPlanManager.fetchReadingPlans(with: viewModel.planId, from: modelContext) {
-                Text(plan.name)
-                Text(plan.planDescription)
-                Text(plan.updateURL)
+            if let readingPlan = try? viewModel.readingPlanManager.fetchReadingPlans(with: viewModel.planId, from: modelContext) {
+                Text(readingPlan.name)
+                Text(readingPlan.type.rawValue)
                 
-                daysList(items: plan.days)
+                if let breadPlan = readingPlan as? BreadPlan, let breadDays = breadPlan.days {
+                    daysList(items: breadDays)
+                }
+                
+                // TODO: If Daily Plan
             }
         }
-        .navigationDestination(for: BreadDay.self) { day in
+        .navigationDestination(for: BreadPlan.Day.self) { day in
             ReadingPlanDayView(day: day)
         }
     }
@@ -62,13 +65,13 @@ struct ReadingPlanView: View {
                     
                     Spacer()
                     
-                    if let day = item as? BreadDay {
+                    if let day = item as? BreadPlan.Day {
                         Button {
                             
                         } label: {
                             Image(systemName: "checkmark")
                                 .foregroundStyle(.primaryText)
-                                .opacity(day.isCompleted ? 1 : 0.5)
+//                                .opacity(day.isCompleted ? 1 : 0.5)
                         }
                     }
                     
