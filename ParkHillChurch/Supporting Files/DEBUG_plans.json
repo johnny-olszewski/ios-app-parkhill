@@ -9,6 +9,7 @@
       "version": 1.0,
       "sections": [
           {
+              "index": 0,
               "title": "Creation & The Fall",
               "days": [
                   {
@@ -53,6 +54,7 @@
               ]
           },
           {
+              "index": 1,
               "title": "Abrahamic Convenant",
               "days": [
                   {
@@ -227,6 +229,7 @@
               ]
           },
           {
+              "index": 2,
               "title": "The Exodus From Egypt",
               "days": [
                   {
@@ -310,6 +313,7 @@
               ]
           },
           {
+              "index": 3, 
               "title": "The Covenant at Mount Sinai",
               "days": [
                   {

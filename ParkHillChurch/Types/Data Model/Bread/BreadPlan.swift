@@ -18,7 +18,6 @@ final class BreadPlan: Decodable, ReadingPlan, Identifiable, Hashable {
     var planDescription: String
     var update_url: String?
     var version: Double?
-//    @Relationship(deleteRule: .cascade, inverse: \Day.plan) var days: [Day]?
     @Relationship(deleteRule: .cascade, inverse: \Section.plan)
     var sections: [Section]?
 
@@ -30,7 +29,6 @@ final class BreadPlan: Decodable, ReadingPlan, Identifiable, Hashable {
         planDescription: String,
         update_url: String? = nil,
         version: Double? = nil,
-//        days: [Day]? = nil
         sections: [Section]? = nil
     ) {
         self.type = type
@@ -39,7 +37,6 @@ final class BreadPlan: Decodable, ReadingPlan, Identifiable, Hashable {
         self.planDescription = planDescription
         self.update_url = update_url
         self.version = version
-//        self.days = days
         self.sections = sections
     }
     
@@ -48,10 +45,9 @@ final class BreadPlan: Decodable, ReadingPlan, Identifiable, Hashable {
         case type
         case id
         case name
-        case planDescription = "description"  // Map JSON "description" → Swift `planDescription`
+        case planDescription = "description"
         case update_url
         case version
-//        case days
         case sections
     }
 
@@ -67,8 +63,6 @@ final class BreadPlan: Decodable, ReadingPlan, Identifiable, Hashable {
         let planDescription = try container.decode(String.self, forKey: .planDescription)
         let updateURL       = try container.decodeIfPresent(String.self, forKey: .update_url)
         let version         = try container.decodeIfPresent(Double.self, forKey: .version)
-//        let days            = try container.decodeIfPresent([Day].self, forKey: .days)
-//        let sections    = try container.decodeIfPresent([Section].self, forKey: .sections)
         let sections       = try container.decodeIfPresent([Section].self, forKey: .sections)
         
         self.init(
@@ -78,7 +72,6 @@ final class BreadPlan: Decodable, ReadingPlan, Identifiable, Hashable {
             planDescription: planDescription,
             update_url: updateURL,
             version: version,
-//            days: days
             sections: sections
         )
     }

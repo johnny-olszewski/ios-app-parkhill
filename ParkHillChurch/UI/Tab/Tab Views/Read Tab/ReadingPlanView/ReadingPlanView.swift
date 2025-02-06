@@ -24,28 +24,25 @@ struct ReadingPlanView: View {
                 Text(readingPlan.name)
                 Text(readingPlan.type.rawValue)
                 
-                if let breadPlan = readingPlan as? BreadPlan, let sections = breadPlan.sections {
-                    ForEach(sections, id: \.self) { section in
-                        if let days = section.days {
-                            Section(section.title) {
-                                daysList(items: days)
+                if let breadPlan = readingPlan as? BreadPlan, let sections = breadPlan.sections?.sorted(by: { $0.index < $1.index }) {
+                    VStack {
+                        ForEach(sections, id: \.self) { section in
+                            if let days = section.days?.sorted(by: { $0.date < $1.date }) {
+                                Section(section.title) {
+                                    daysList(items: days)
+                                }
                             }
                         }
                     }
+                    .padding(.bottom, 100)
                 }
             }
-            
-            
-            
-            //                if let breadPlan = readingPlan as? BreadPlan, let breadDays = breadPlan.days {
-            //                    daysList(items: breadDays)
-            //                }
-            
             // TODO: If Daily Plan
         }
-        //        .navigationDestination(for: BreadPlan.Day.self) { day in
-        //            ReadingPlanDayView(day: day)
-        //        }
+        .navigationDestination(for: BreadPlan.Day.self) { day in
+            ReadingPlanDayView(day: day)
+        }
+                
     }
     
     func daysList<T: Listable & Hashable>(items: [T]) -> some View {
@@ -55,7 +52,6 @@ struct ReadingPlanView: View {
                     .padding(.horizontal)
             }
         }
-        .padding(.bottom, 100)
     }
     
     func cell<T: Listable & Hashable>(for item: T) -> some View {
@@ -86,8 +82,6 @@ struct ReadingPlanView: View {
                                 .opacity(day.isCompleted ? 1 : 0.5)
                         }
                     }
-                    
-                    
                 }
             }
             Divider()
