@@ -19,26 +19,33 @@ struct ReadingPlanView: View {
     }
     
     var body: some View {
-        ScrollView {
-            if let readingPlan = readingPlanManager.readingPlan {
-                Text(readingPlan.name)
-                Text(readingPlan.type.rawValue)
-                
-                if let breadPlan = readingPlan as? BreadReadingPlan, let sections = breadPlan.sections?.sorted(by: { $0.index < $1.index }) {
-                    VStack {
-                        ForEach(sections, id: \.self) { section in
-                            if let days = section.days?.sorted(by: { $0.date < $1.date }) {
-                                Section(section.title) {
-                                    daysList(items: days)
-                                }
-                            }
-                        }
+        ScrollView(.horizontal) {
+            
+            LazyHStack {
+                if let days = readingPlanManager.getDays() {
+                    ForEach(days) { day in
+                        Text("\(day.date)")
+                            .containerRelativeFrame(.horizontal, count: 1, spacing: 0, alignment: .center)
                     }
-                    .padding(.bottom, 100)
                 }
             }
+            .scrollTargetLayout()
+            
+            //                if let breadPlan = readingPlan as? BreadReadingPlan, let sections = breadPlan.sections?.sorted(by: { $0.index < $1.index }) {
+            //                    VStack {
+            //                        ForEach(sections, id: \.self) { section in
+            //                            if let days = section.days?.sorted(by: { $0.date < $1.date }) {
+            //                                Section(section.title) {
+            //                                    daysList(items: days)
+            //                                }
+            //                            }
+            //                        }
+            //                    }
+            //                    .padding(.bottom, 100)
+            //                }
             // TODO: If Daily Plan
         }
+        .scrollTargetBehavior(.viewAligned)
         .navigationDestination(for: BreadReadingPlan.Day.self) { day in
             ReadingPlanDayView(day: day)
         }

@@ -29,6 +29,18 @@ class ReadingPlanManager: ObservableObject {
         }
     }
     
+    func getDays() -> [BreadReadingPlan.Day]? {
+        if let breadReadingPlan = readingPlan as? BreadReadingPlan, let sections = breadReadingPlan.sections {
+            let allDays: [BreadReadingPlan.Day] = sections.flatMap { section in
+                section.days ?? []
+            }
+            
+            return allDays.sorted { $0.date < $1.date }
+        }
+        
+        return nil
+    }
+    
     // MARK: - ReadingPlanProviding
     
     func fetchReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
