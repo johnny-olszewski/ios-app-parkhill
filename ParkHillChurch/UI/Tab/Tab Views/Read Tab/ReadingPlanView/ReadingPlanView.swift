@@ -20,7 +20,7 @@ struct ReadingPlanView: View {
     
     var body: some View {
         ScrollView {
-            if let readingPlan = try? readingPlanManager.fetchReadingPlans() {
+            if let readingPlan = readingPlanManager.readingPlan {
                 Text(readingPlan.name)
                 Text(readingPlan.type.rawValue)
                 
@@ -42,7 +42,6 @@ struct ReadingPlanView: View {
         .navigationDestination(for: BreadReadingPlan.Day.self) { day in
             ReadingPlanDayView(day: day)
         }
-                
     }
     
     func daysList<T: Listable & Hashable>(items: [T]) -> some View {

@@ -15,15 +15,23 @@ class ReadingPlanManager: ObservableObject {
     let logger = Logger.readingPlanManager
     let planId: String
     let modelContext: ModelContext
+    @Published var readingPlan: ReadingPlan?
     
     init(planId: String, modelContext: ModelContext) {
         self.planId = planId
         self.modelContext = modelContext
+        
+        do {
+            self.readingPlan = try fetchReadingPlan()
+        } catch {
+            print("Failed to fetch ReadingPlan: \(error)")
+            self.readingPlan = nil
+        }
     }
     
     // MARK: - ReadingPlanProviding
     
-    func fetchReadingPlans(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
+    func fetchReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
         let id = id ?? self.planId
         let modelContext = modelContext ?? self.modelContext
         
@@ -46,11 +54,11 @@ class ReadingPlanManager: ObservableObject {
     func loadReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
         let id = id ?? self.planId
         let modelContext = modelContext ?? self.modelContext
-
+        
         do {
             guard let url = Bundle.main.url(forResource: "DEBUG_plans", withExtension: "json") else { return nil } // TODO: Should throw, TEST FILE
             let data = try Data(contentsOf: url)
-
+            
             let plans: [ReadingPlan] = try loadPlans(from: data)
             
             for plan in plans {
@@ -123,8 +131,6 @@ class ReadingPlanManager: ObservableObject {
         
         return results
     }
-    
-    
 }
 
 
