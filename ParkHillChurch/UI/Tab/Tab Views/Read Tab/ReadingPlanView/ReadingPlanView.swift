@@ -13,6 +13,7 @@ struct ReadingPlanView: View {
     @Environment(\.modelContext) var modelContext
     
     @ObservedObject var readingPlanManager: ReadingPlanManager
+    @State var isShowingDaySelector: Bool = false
     
     init(readingPlanManager: ReadingPlanManager) {
         self.readingPlanManager = readingPlanManager
@@ -24,76 +25,33 @@ struct ReadingPlanView: View {
             LazyHStack {
                 if let days = readingPlanManager.getDays() {
                     ForEach(days) { day in
-                        Text("\(day.date)")
-                            .containerRelativeFrame(.horizontal, count: 1, spacing: 0, alignment: .center)
+                        VStack {
+                            Text("\(day.date)")
+                                .containerRelativeFrame(.horizontal, count: 1, spacing: 0, alignment: .center)
+                            Button("Date") {
+                                isShowingDaySelector.toggle()
+                            }
+                        }
                     }
                 }
             }
             .scrollTargetLayout()
             
-            //                if let breadPlan = readingPlan as? BreadReadingPlan, let sections = breadPlan.sections?.sorted(by: { $0.index < $1.index }) {
-            //                    VStack {
-            //                        ForEach(sections, id: \.self) { section in
-            //                            if let days = section.days?.sorted(by: { $0.date < $1.date }) {
-            //                                Section(section.title) {
-            //                                    daysList(items: days)
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                    .padding(.bottom, 100)
-            //                }
+            
             // TODO: If Daily Plan
         }
         .scrollTargetBehavior(.viewAligned)
         .navigationDestination(for: BreadReadingPlan.Day.self) { day in
             ReadingPlanDayView(day: day)
         }
-    }
-    
-    func daysList<T: Listable & Hashable>(items: [T]) -> some View {
-        LazyVStack {
-            ForEach(items, id: \.self) { item in
-                cell(for: item)
-                    .padding(.horizontal)
+        .sheet(isPresented: $isShowingDaySelector) {
+            if let readingPlan = readingPlanManager.readingPlan {
+                ReadingPlanDaySelector(readingPlan: readingPlan)
             }
         }
     }
     
-    func cell<T: Listable & Hashable>(for item: T) -> some View {
-        VStack(alignment: .leading) {
-            NavigationLink(value: item) {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(item.listTitle.uppercased())
-                            .font(.system(size: 13, weight: .thin))
-                            .foregroundStyle(.primaryText)
-                            .padding(.vertical, 2)
-                        
-                        if let subTitle = item.listSubtitle {
-                            Text(subTitle)
-                                .font(.system(size: 15, weight: .light))
-                                .foregroundStyle(.primaryText)
-                        }
-                    }
-                    
-                    Spacer()
-                    
-                    if let day = item as? BreadReadingPlan.Day {
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "checkmark")
-                                .foregroundStyle(.primaryText)
-                                .opacity(day.isCompleted ? 1 : 0.5)
-                        }
-                    }
-                }
-            }
-            Divider()
-                .padding(.horizontal)
-        }
-    }
+    
 }
 
 //#Preview {
