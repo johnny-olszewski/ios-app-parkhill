@@ -9,17 +9,18 @@ import SwiftUI
 
 struct ReadingPlanDayView: View {
     
-    var day: BreadDay
+    var day: BreadPlan.Day
     
     var body: some View {
         HStack {
             VStack {
+                Text(day.id)
                 Text("\(day.date.formatted(date: .numeric, time: .omitted))")
                 Text(day.passages.description)
             }
             
             Button {
-                
+                day.isCompleted.toggle()
             } label: {
                 Image(systemName: "checkmark")
                     .foregroundStyle(.primaryText)

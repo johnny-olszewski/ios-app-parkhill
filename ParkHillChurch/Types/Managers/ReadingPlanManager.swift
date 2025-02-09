@@ -18,34 +18,103 @@ class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
     
     // MARK: - ReadingPlanProviding
     
-    func loadReadingPlan(with id: String, from modelContext: ModelContext) throws {
-        print("ReadingPlanManager.loadReadingPlan(with: \(id) from: ModelContext)")
+    func fetchReadingPlans(with id: String, from modelContext: ModelContext) throws -> ReadingPlan? {
+        print("ReadingPlanManager.fetchReadingPlan(with: \(id) from: ModelContext)")
+        let descriptor = FetchDescriptor<BreadPlan>( // needs to be ReadingPlan
+            predicate: #Predicate { $0.id == id }
+        )
+        
         do {
-            let loadedPlan = try ReadingPlan.initFromJson(fileName: "ph_bread_2025")
-            
-            switch loadedPlan.type {
-            case .bread:
-                let breadPlan = BreadPlan(readingPlan: loadedPlan)
-                modelContext.insert(breadPlan)
-                
-                try modelContext.save()
-            default: break
+            let matchingPlans = try modelContext.fetch(descriptor)
+            if matchingPlans.isEmpty {
+                return try loadReadingPlan(with: id, from: modelContext)
             }
+            return matchingPlans.first
         } catch {
+            print("ERROR: \(error)")
             throw error
         }
     }
     
-    func fetchReadingPlans(context: ModelContext, planId: String) throws -> [BreadPlan] {
-        let descriptor = FetchDescriptor<BreadPlan>(
-            predicate: #Predicate { $0.id == planId }
-        )
+    func loadReadingPlan(with id: String, from modelContext: ModelContext) throws -> ReadingPlan? {
+        print("ReadingPlanManager.loadReadingPlan(with: \(id) from: ModelContext)")
         do {
-            return try context.fetch(descriptor)
+            guard let url = Bundle.main.url(forResource: "DEBUG_plans", withExtension: "json") else { return nil } // TODO: Should throw, TEST FILE
+            let data = try Data(contentsOf: url)
+
+            let plans: [ReadingPlan] = try loadPlans(from: data)
+            
+            for plan in plans {
+                if plan.id == id {
+                    
+                    if let breadPlan = plan as? BreadPlan {
+                        modelContext.insert(breadPlan) // Now the compiler sees a concrete @Model
+                    } else if let dailyPlan = plan as? DailyPlan {
+                        modelContext.insert(dailyPlan)
+                    } else {
+                        // Unknown plan type; do nothing or handle error
+                    }
+                    
+                    return plan
+                }
+            }
         } catch {
+            print("ERROR: \(error)")
             throw error
         }
+        
+        return nil
     }
+    
+    func loadPlans(from jsonData: Data) throws -> [ReadingPlan] {
+        // 1) Parse top-level as dictionary
+        let topLevel = try JSONSerialization.jsonObject(with: jsonData, options: [])
+        guard let dictionary = topLevel as? [String: Any] else {
+            throw DecodingError
+                .dataCorrupted(.init(codingPath: [],debugDescription: "Top-level JSON is not a dictionary."))
+        }
+        
+        // 2) Extract plans array
+        guard let rawPlans = dictionary["plans"] as? [[String: Any]] else {
+            // If there's no "plans" key or it's not an array of dicts, return empty or throw
+            return []
+        }
+        
+        let decoder = JSONDecoder()
+        var results: [ReadingPlan] = []
+        
+        // 3) Convert each plan dict → Data → decode by "type"
+        for rawPlan in rawPlans {
+            // Convert to Data
+            let planData = try JSONSerialization.data(withJSONObject: rawPlan)
+            
+            // Peek at "type"
+            guard let type: ReadingPlanType =  .init(rawValue: rawPlan["type"] as? String ?? "unknown") else {
+                continue // skip if missing
+            }
+            
+            guard let planID = rawPlan["id"] as? String else {
+                continue
+            }
+            
+            decoder.userInfo[.planID] = planID
+            
+            // 4) Decode concrete plan
+            switch type {
+            case .bread:
+                let plan = try decoder.decode(BreadPlan.self, from: planData)
+                results.append(plan)
+            case .daily:
+                let plan = try decoder.decode(DailyPlan.self, from: planData)
+                results.append(plan)
+            case .unknown:
+                print("Unknown plan type '\(type)'; skipping.")
+            }
+        }
+        
+        return results
+    }
+    
     
 }
 

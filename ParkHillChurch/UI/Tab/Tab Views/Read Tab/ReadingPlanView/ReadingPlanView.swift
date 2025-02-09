@@ -20,30 +20,38 @@ struct ReadingPlanView: View {
     
     var body: some View {
         ScrollView {
-            if let plan = try? viewModel.readingPlanManager.fetchReadingPlans(context: modelContext, planId: viewModel.planId).first {
-                Text(plan.name)
-                Text(plan.planDescription)
-                Text(plan.updateURL)
+            if let readingPlan = try? viewModel.readingPlanManager.fetchReadingPlans(with: viewModel.planId, from: modelContext) {
+                Text(readingPlan.name)
+                Text(readingPlan.type.rawValue)
                 
-                daysList(items: plan.days)
+                if let breadPlan = readingPlan as? BreadPlan, let sections = breadPlan.sections?.sorted(by: { $0.index < $1.index }) {
+                    VStack {
+                        ForEach(sections, id: \.self) { section in
+                            if let days = section.days?.sorted(by: { $0.date < $1.date }) {
+                                Section(section.title) {
+                                    daysList(items: days)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.bottom, 100)
+                }
             }
+            // TODO: If Daily Plan
         }
-        .task {
-            try? viewModel.readingPlanManager.loadReadingPlan(with: viewModel.planId, from: modelContext)
-        }
-        .navigationDestination(for: BreadDay.self) { day in
+        .navigationDestination(for: BreadPlan.Day.self) { day in
             ReadingPlanDayView(day: day)
         }
+                
     }
     
     func daysList<T: Listable & Hashable>(items: [T]) -> some View {
         LazyVStack {
             ForEach(items, id: \.self) { item in
                 cell(for: item)
-                .padding(.horizontal)
+                    .padding(.horizontal)
             }
         }
-        .padding(.bottom, 100)
     }
     
     func cell<T: Listable & Hashable>(for item: T) -> some View {
@@ -65,7 +73,7 @@ struct ReadingPlanView: View {
                     
                     Spacer()
                     
-                    if let day = item as? BreadDay {
+                    if let day = item as? BreadPlan.Day {
                         Button {
                             
                         } label: {
@@ -74,8 +82,6 @@ struct ReadingPlanView: View {
                                 .opacity(day.isCompleted ? 1 : 0.5)
                         }
                     }
-                    
-                   
                 }
             }
             Divider()
