@@ -13,10 +13,7 @@ struct ReadTabView: View {
     @Environment(\.debugAppState) private var debugAppState
     #endif
     
-    @State private var selectedSection: Section = .bread
     @State private var debugProvider: Bool = true
-    
-    let viewModel: ReadTabViewModel = .init()
     
     var body: some View {
         NavigationStack {
@@ -38,51 +35,15 @@ struct ReadTabView: View {
     @ViewBuilder var content: some View {
         
         VStack {
-            
-            SectionPicker
-            
-            switch selectedSection {
-            case .bread:
-                ReadingPlanView(viewModel: generateViewModel())
-                    .ignoresSafeArea(edges: [.bottom])
-                
-            case .read:
-                Text("Read Section")
-            }
-        }
-    }
-    
-    @ViewBuilder
-    var SectionPicker: some View {
-        HStack {
-            ForEach(viewModel.availableSections) { section in
-                pickerButton(for: section)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    func pickerButton(for section: Section) -> some View {
-        Button {
-            selectedSection = section
-        } label: {
-            ZStack {
-                Capsule()
-                    .fill(selectedSection == section ? Color.primaryText : .clear)
-                    .stroke(Color.primaryText, lineWidth: 1)
-                    .frame(width: 60, height: 24)
-                
-                Text(section.rawValue.uppercased())
-                    .font(.system(size: 14, weight: .light))
-                    .foregroundStyle(selectedSection == section ? Color.primaryBackground : .primaryText)
-            }
+            ReadingPlanView(viewModel: generateViewModel())
+                .ignoresSafeArea(edges: [.bottom])
         }
     }
     
     private func generateViewModel() -> ReadingPlanViewModel {
         let readingPlanManager: ReadingPlanManager
         #if DEBUG
-        readingPlanManager = debugAppState.isUsingDebugReadingPlanProvider ? DEBUGReadingPlanManager() : ReadingPlanManager()
+        readingPlanManager =  DEBUGReadingPlanManager(shouldUseDebugReadingPlanManager: debugAppState.isUsingDebugReadingPlanProvider)
         #else
         readingPlanManager = ReadingPlanManager()
         #endif
