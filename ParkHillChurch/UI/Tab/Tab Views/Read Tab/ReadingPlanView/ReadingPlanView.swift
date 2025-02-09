@@ -24,7 +24,7 @@ struct ReadingPlanView: View {
                 Text(readingPlan.name)
                 Text(readingPlan.type.rawValue)
                 
-                if let breadPlan = readingPlan as? BreadPlan, let sections = breadPlan.sections?.sorted(by: { $0.index < $1.index }) {
+                if let breadPlan = readingPlan as? BreadReadingPlan, let sections = breadPlan.sections?.sorted(by: { $0.index < $1.index }) {
                     VStack {
                         ForEach(sections, id: \.self) { section in
                             if let days = section.days?.sorted(by: { $0.date < $1.date }) {
@@ -39,7 +39,7 @@ struct ReadingPlanView: View {
             }
             // TODO: If Daily Plan
         }
-        .navigationDestination(for: BreadPlan.Day.self) { day in
+        .navigationDestination(for: BreadReadingPlan.Day.self) { day in
             ReadingPlanDayView(day: day)
         }
                 
@@ -73,7 +73,7 @@ struct ReadingPlanView: View {
                     
                     Spacer()
                     
-                    if let day = item as? BreadPlan.Day {
+                    if let day = item as? BreadReadingPlan.Day {
                         Button {
                             
                         } label: {

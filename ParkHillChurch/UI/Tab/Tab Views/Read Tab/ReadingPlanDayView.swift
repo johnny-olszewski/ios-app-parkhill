@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReadingPlanDayView: View {
     
-    var day: BreadPlan.Day
+    var day: BreadReadingPlan.Day
     
     var body: some View {
         HStack {

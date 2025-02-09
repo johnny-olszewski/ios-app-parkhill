@@ -27,7 +27,7 @@ class ReadingPlanManager: ObservableObject {
         let id = id ?? self.planId
         let modelContext = modelContext ?? self.modelContext
         
-        let descriptor = FetchDescriptor<BreadPlan>( // needs to be ReadingPlan
+        let descriptor = FetchDescriptor<BreadReadingPlan>( // needs to be ReadingPlan
             predicate: #Predicate { $0.id == id }
         )
         
@@ -56,7 +56,7 @@ class ReadingPlanManager: ObservableObject {
             for plan in plans {
                 if plan.id == id {
                     
-                    if let breadPlan = plan as? BreadPlan {
+                    if let breadPlan = plan as? BreadReadingPlan {
                         modelContext.insert(breadPlan) // Now the compiler sees a concrete @Model
                     } else if let dailyPlan = plan as? DailyPlan {
                         modelContext.insert(dailyPlan)
@@ -111,7 +111,7 @@ class ReadingPlanManager: ObservableObject {
             // 4) Decode concrete plan
             switch type {
             case .bread:
-                let plan = try decoder.decode(BreadPlan.self, from: planData)
+                let plan = try decoder.decode(BreadReadingPlan.self, from: planData)
                 results.append(plan)
             case .daily:
                 let plan = try decoder.decode(DailyPlan.self, from: planData)

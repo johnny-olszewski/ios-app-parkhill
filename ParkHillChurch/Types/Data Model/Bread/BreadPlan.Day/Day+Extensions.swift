@@ -11,7 +11,7 @@ import SwiftData
 import os
 import SwiftUI
 
-extension BreadPlan.Day: Listable {
+extension BreadReadingPlan.Day: Listable {
     var listTitle: String {
         return "\(date.formatted(date: .abbreviated, time: .omitted))"
     }

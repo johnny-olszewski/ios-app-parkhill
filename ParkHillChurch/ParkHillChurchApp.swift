@@ -17,7 +17,7 @@ struct ParkHillChurchApp: App {
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            BreadPlan.self,
+            BreadReadingPlan.self,
             DailyPlan.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)

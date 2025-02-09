@@ -9,7 +9,7 @@
 import Foundation
 import SwiftData
 
-extension BreadPlan {
+extension BreadReadingPlan {
     
     @Model
     final class Day: Decodable, Identifiable, Hashable {
