@@ -10,16 +10,23 @@ import SwiftData
 import os
 import SwiftUI
 
-class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
+class ReadingPlanManager: ObservableObject {
     
     let logger = Logger.readingPlanManager
+    let planId: String
+    let modelContext: ModelContext
     
-    init() { }
+    init(planId: String, modelContext: ModelContext) {
+        self.planId = planId
+        self.modelContext = modelContext
+    }
     
     // MARK: - ReadingPlanProviding
     
-    func fetchReadingPlans(with id: String, from modelContext: ModelContext) throws -> ReadingPlan? {
-        print("ReadingPlanManager.fetchReadingPlan(with: \(id) from: ModelContext)")
+    func fetchReadingPlans(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
+        let id = id ?? self.planId
+        let modelContext = modelContext ?? self.modelContext
+        
         let descriptor = FetchDescriptor<BreadPlan>( // needs to be ReadingPlan
             predicate: #Predicate { $0.id == id }
         )
@@ -36,8 +43,10 @@ class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
         }
     }
     
-    func loadReadingPlan(with id: String, from modelContext: ModelContext) throws -> ReadingPlan? {
-        print("ReadingPlanManager.loadReadingPlan(with: \(id) from: ModelContext)")
+    func loadReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
+        let id = id ?? self.planId
+        let modelContext = modelContext ?? self.modelContext
+
         do {
             guard let url = Bundle.main.url(forResource: "DEBUG_plans", withExtension: "json") else { return nil } // TODO: Should throw, TEST FILE
             let data = try Data(contentsOf: url)

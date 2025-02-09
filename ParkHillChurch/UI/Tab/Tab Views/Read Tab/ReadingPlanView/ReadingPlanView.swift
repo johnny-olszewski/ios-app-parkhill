@@ -12,15 +12,15 @@ struct ReadingPlanView: View {
     
     @Environment(\.modelContext) var modelContext
     
-    @ObservedObject var viewModel: ReadingPlanViewModel
+    @ObservedObject var readingPlanManager: ReadingPlanManager
     
-    init(viewModel: ReadingPlanViewModel) {
-        self.viewModel = viewModel
+    init(readingPlanManager: ReadingPlanManager) {
+        self.readingPlanManager = readingPlanManager
     }
     
     var body: some View {
         ScrollView {
-            if let readingPlan = try? viewModel.readingPlanManager.fetchReadingPlans(with: viewModel.planId, from: modelContext) {
+            if let readingPlan = try? readingPlanManager.fetchReadingPlans() {
                 Text(readingPlan.name)
                 Text(readingPlan.type.rawValue)
                 

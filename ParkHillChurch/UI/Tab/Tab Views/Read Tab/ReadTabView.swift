@@ -13,6 +13,7 @@ struct ReadTabView: View {
     @Environment(\.debugAppState) private var debugAppState
     #endif
     
+    @Environment(\.modelContext) var modelContext
     @State private var debugProvider: Bool = true
     
     var body: some View {
@@ -35,20 +36,22 @@ struct ReadTabView: View {
     @ViewBuilder var content: some View {
         
         VStack {
-            ReadingPlanView(viewModel: generateViewModel())
+            ReadingPlanView(readingPlanManager: generateReadingPlanManager())
                 .ignoresSafeArea(edges: [.bottom])
         }
     }
     
-    private func generateViewModel() -> ReadingPlanViewModel {
-        let readingPlanManager: ReadingPlanManager
+    private func generateReadingPlanManager() -> ReadingPlanManager {
+
         #if DEBUG
-        readingPlanManager =  DEBUGReadingPlanManager(shouldUseDebugReadingPlanManager: debugAppState.isUsingDebugReadingPlanProvider)
+        return  DEBUGReadingPlanManager(
+            planId: ParkHillSharedConstants.ReadingPlan.bread2025Id,
+            modelContext: modelContext,
+            shouldUseDebugReadingPlanManager: debugAppState.isUsingDebugReadingPlanProvider
+        )
         #else
-        readingPlanManager = ReadingPlanManager()
-        #endif
-        
-        return ReadingPlanViewModel(planId: ParkHillSharedConstants.ReadingPlan.bread2025Id, readingPlanManager: readingPlanManager)
+        return  ReadingPlanManager(planId: ParkHillSharedConstants.ReadingPlan.bread2025Id, modelContext: modelContext)
+        #endif        
     }
 }
 

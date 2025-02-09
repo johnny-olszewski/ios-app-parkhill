@@ -14,19 +14,19 @@ class DEBUGReadingPlanManager: ReadingPlanManager {
     
     @Published var shouldUseDebugReadingPlanManager: Bool
     
-    init(shouldUseDebugReadingPlanManager: Bool) {
+    init(planId: String, modelContext: ModelContext, shouldUseDebugReadingPlanManager: Bool) {
         self.shouldUseDebugReadingPlanManager = shouldUseDebugReadingPlanManager
-        super.init()
+        super.init(planId: planId, modelContext: modelContext)
     }
     
-    override func loadReadingPlan(with id: String, from modelContext: ModelContext) throws -> ReadingPlan?  {
+    override func loadReadingPlan(with id: String?, from modelContext: ModelContext?) throws -> ReadingPlan?  {
         if !shouldUseDebugReadingPlanManager {
             return try? super.loadReadingPlan(with: id, from: modelContext)
         }
         return nil
     }
     
-    override func fetchReadingPlans(with planId: String, from modelContext: ModelContext) throws -> ReadingPlan? {
+    override func fetchReadingPlans(with planId: String?, from modelContext: ModelContext?) throws -> ReadingPlan? {
         if !shouldUseDebugReadingPlanManager {
             return try? super.fetchReadingPlans(with: planId, from: modelContext)
         }
