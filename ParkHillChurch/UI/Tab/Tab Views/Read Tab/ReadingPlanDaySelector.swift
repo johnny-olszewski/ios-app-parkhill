@@ -14,18 +14,29 @@ struct ReadingPlanDaySelector: View {
     var body: some View {
         ScrollView {
             if let breadPlan = readingPlan as? BreadReadingPlan, let sections = breadPlan.sections?.sorted(by: { $0.index < $1.index }) {
-                VStack {
+                LazyVStack(pinnedViews: .sectionHeaders) {
                     ForEach(sections, id: \.self) { section in
                         if let days = section.days?.sorted(by: { $0.date < $1.date }) {
-                            Section(section.title) {
+                            Section {
                                 daysList(items: days)
+                            } header: {
+                                ZStack {
+                                    Color.primaryBackground
+                                        .opacity(0.8)
+                                        .frame(maxWidth: .infinity)
+                                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                                    
+                                    Text(section.title)
+                                        .font(.custom("Baskerville", size: 18))
+                                        .padding()
+                                }
                             }
                         }
                     }
                 }
-                .padding(.bottom, 100)
             }
         }
+        .padding()
     }
     
     func daysList<T: Listable & Hashable>(items: [T]) -> some View {
@@ -41,18 +52,18 @@ struct ReadingPlanDaySelector: View {
         VStack(alignment: .leading) {
             NavigationLink(value: item) {
                 HStack {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 4) {
                         Text(item.listTitle.uppercased())
-                            .font(.system(size: 13, weight: .thin))
+                            .font(.system(size: 13, weight: .light))
                             .foregroundStyle(.primaryText)
-                            .padding(.vertical, 2)
                         
                         if let subTitle = item.listSubtitle {
                             Text(subTitle)
-                                .font(.system(size: 15, weight: .light))
+                                .font(.system(size: 15, weight: .thin))
                                 .foregroundStyle(.primaryText)
                         }
                     }
+                    .padding(.vertical, 8)
                     
                     Spacer()
                     
@@ -61,14 +72,11 @@ struct ReadingPlanDaySelector: View {
                             
                         } label: {
                             Image(systemName: "checkmark")
-                                .foregroundStyle(.primaryText)
-                                .opacity(day.isCompleted ? 1 : 0.5)
+                                .foregroundStyle(day.isCompleted ? .green : .primaryText.opacity(0.5))
                         }
                     }
                 }
             }
-            Divider()
-                .padding(.horizontal)
         }
     }
 }
