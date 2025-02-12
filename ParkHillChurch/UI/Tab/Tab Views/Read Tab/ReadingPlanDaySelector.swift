@@ -11,6 +11,9 @@ struct ReadingPlanDaySelector: View {
     
     let readingPlan: ReadingPlan
     
+    @Binding var isPresented: Bool
+    @Binding var selectedDay: Int?
+    
     var body: some View {
         ScrollView {
             if let breadPlan = readingPlan as? BreadReadingPlan, let sections = breadPlan.sections?.sorted(by: { $0.index < $1.index }) {
@@ -39,11 +42,19 @@ struct ReadingPlanDaySelector: View {
         .padding()
     }
     
-    func daysList<T: Listable & Hashable>(items: [T]) -> some View {
+//    func daysList<T: Listable & Hashable>(items: [T]) -> some View {
+    func daysList(items: [BreadReadingPlan.Day]) -> some View {
         LazyVStack {
             ForEach(items, id: \.self) { item in
-                cell(for: item)
-                    .padding(.horizontal)
+                Button {
+                    withAnimation {
+                        selectedDay = Calendar.current.component(.dayOfYear, from: item.date)
+                    }
+                    isPresented = false
+                } label: {
+                    cell(for: item)
+                        .padding(.horizontal)
+                }
             }
         }
     }
@@ -72,7 +83,7 @@ struct ReadingPlanDaySelector: View {
                             
                         } label: {
                             Image(systemName: "checkmark")
-                                .foregroundStyle(day.isCompleted ? .green : .primaryText.opacity(0.5))
+                                .foregroundStyle(day.dateCompleted != nil ? .green : .primaryText.opacity(0.5))
                         }
                     }
                 }
