@@ -29,7 +29,11 @@ class ReadingPlanManager: ObservableObject {
         }
     }
     
-    func getDays() -> [BreadReadingPlan.Day]? {
+    func getDay(_ index: Int) -> BreadReadingPlan.Day? {
+        return getAllDays()?.first { $0.dayOfPlan == index } ?? nil
+    }
+    
+    func getAllDays() -> [BreadReadingPlan.Day]? {
         if let breadReadingPlan = readingPlan as? BreadReadingPlan, let sections = breadReadingPlan.sections {
             let allDays: [BreadReadingPlan.Day] = sections.flatMap { section in
                 section.days ?? []

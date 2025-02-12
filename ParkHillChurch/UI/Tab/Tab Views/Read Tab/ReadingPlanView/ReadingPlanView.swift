@@ -14,19 +14,25 @@ struct ReadingPlanView: View {
     
     @ObservedObject var readingPlanManager: ReadingPlanManager
     @State var isShowingDaySelector: Bool = false
-    @State var selectedDay: Int? = 0
+    @State var selectedDayOfPlan: Int? = 0
+    
+    var selectedDay: BreadReadingPlan.Day? {
+        guard let selectedDayOfPlan else { return nil }
+        
+        return readingPlanManager.getDay(selectedDayOfPlan)
+    }
     
     init(readingPlanManager: ReadingPlanManager) {
         self.readingPlanManager = readingPlanManager
         
-        self.selectedDay = 2
+        self.selectedDayOfPlan = 2
     }
     
     var body: some View {
         ScrollView(.horizontal) {
             ScrollViewReader { proxy in
                 LazyHStack {
-                    if let days = readingPlanManager.getDays() {
+                    if let days = readingPlanManager.getAllDays() {
                         ForEach(days) { day in
                             ReadingPlanDayView(day: day) {
                                 isShowingDaySelector.toggle()
@@ -37,36 +43,20 @@ struct ReadingPlanView: View {
                     }
                 }
                 .scrollTargetLayout()
-                .onChange(of: selectedDay) { oldValue, newValue in
+                .onChange(of: selectedDayOfPlan) { oldValue, newValue in
                     print("OLD: \(oldValue)\tNEW: \(newValue)")
                 }
             }
         }
-        .scrollPosition(id: $selectedDay)
+        .scrollPosition(id: $selectedDayOfPlan)
         .safeAreaInset(edge: .top) {
             header
-            .padding()
-            
-            HStack {
-                Button("5") {
-                    withAnimation {
-                        selectedDay = 5
-                    }
-                }
-                Button("10") {
-                    selectedDay = 10
-                }
-                Button("20") {
-                    withAnimation {
-                        selectedDay = 20
-                    }
-                }
-            }
+                .padding()
         }
         .scrollTargetBehavior(.viewAligned)
         .sheet(isPresented: $isShowingDaySelector) {
             if let readingPlan = readingPlanManager.readingPlan {
-                ReadingPlanDaySelector(readingPlan: readingPlan, isPresented: $isShowingDaySelector, selectedDay: $selectedDay)
+                ReadingPlanDaySelector(readingPlan: readingPlan, isPresented: $isShowingDaySelector, selectedDay: $selectedDayOfPlan)
             }
         }
     }
@@ -74,18 +64,52 @@ struct ReadingPlanView: View {
 
 extension ReadingPlanView {
     
+    @ViewBuilder
     private var header: some View {
-        HStack {
-            
-            
+        if let visibleDay = selectedDay, let selectedDayOfPlan {
             Button {
                 isShowingDaySelector.toggle()
             } label: {
-                Text("\(selectedDay)")
-                    .font(.system(size: 26, weight: .bold))
-                    .padding(.trailing)
+                HStack {
+                    DateLabel(value: selectedDayOfPlan)
+                        .animation(.easeInOut, value: selectedDayOfPlan)
+                        .font(.system(size: 26, weight: .bold))
+                        .padding(.trailing)
+                    
+                    VStack(alignment: .leading) {
+                        Text(visibleDay.date.formatted(Date.FormatStyle().weekday(.wide)))
+                            .font(.system(size: 13, weight: .light))
+                            .foregroundStyle(.primaryText)
+                        Text(visibleDay.date.formatted(Date.FormatStyle().month(.wide).year()))
+                            .font(.system(size: 15, weight: .thin))
+                            .foregroundStyle(.primaryText)
+                    }
+                    
+                    Spacer()
+                    
+                    Button {
+                        visibleDay.dateCompleted = Date()
+                    } label: {
+                        Image(systemName: "checkmark")
+                            .foregroundStyle(visibleDay.dateCompleted != nil ? .green : .primaryText.opacity(0.5))
+                    }
+                }
             }
         }
+    }
+}
+
+struct DateLabel: View, Animatable {
+    
+    var value: Int
+    
+    var animatableData: Double {
+        get { Double(value) }
+        set { value = Int(newValue) }
+    }
+    
+    var body: some View {
+        Text("\(value)")
     }
 }
 
