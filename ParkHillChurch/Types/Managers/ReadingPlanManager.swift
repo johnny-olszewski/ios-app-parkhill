@@ -10,17 +10,48 @@ import SwiftData
 import os
 import SwiftUI
 
-class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
+class ReadingPlanManager: ObservableObject {
     
     let logger = Logger.readingPlanManager
+    let planId: String
+    let modelContext: ModelContext
+    @Published var readingPlan: ReadingPlan?
     
-    init() { }
+    init(planId: String, modelContext: ModelContext) {
+        self.planId = planId
+        self.modelContext = modelContext
+        
+        do {
+            self.readingPlan = try fetchReadingPlan()
+        } catch {
+            print("Failed to fetch ReadingPlan: \(error)")
+            self.readingPlan = nil
+        }
+    }
+    
+    func getDay(_ index: Int) -> BreadReadingPlan.Day? {
+        return getAllDays()?.first { $0.dayOfPlan == index } ?? nil
+    }
+    
+    func getAllDays() -> [BreadReadingPlan.Day]? {
+        if let breadReadingPlan = readingPlan as? BreadReadingPlan, let sections = breadReadingPlan.sections {
+            let allDays: [BreadReadingPlan.Day] = sections.flatMap { section in
+                section.days ?? []
+            }
+            
+            return allDays.sorted { $0.date < $1.date }
+        }
+        
+        return nil
+    }
     
     // MARK: - ReadingPlanProviding
     
-    func fetchReadingPlans(with id: String, from modelContext: ModelContext) throws -> ReadingPlan? {
-        print("ReadingPlanManager.fetchReadingPlan(with: \(id) from: ModelContext)")
-        let descriptor = FetchDescriptor<BreadPlan>( // needs to be ReadingPlan
+    func fetchReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
+        let id = id ?? self.planId
+        let modelContext = modelContext ?? self.modelContext
+        
+        let descriptor = FetchDescriptor<BreadReadingPlan>( // needs to be ReadingPlan
             predicate: #Predicate { $0.id == id }
         )
         
@@ -36,18 +67,20 @@ class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
         }
     }
     
-    func loadReadingPlan(with id: String, from modelContext: ModelContext) throws -> ReadingPlan? {
-        print("ReadingPlanManager.loadReadingPlan(with: \(id) from: ModelContext)")
+    func loadReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
+        let id = id ?? self.planId
+        let modelContext = modelContext ?? self.modelContext
+        
         do {
             guard let url = Bundle.main.url(forResource: "DEBUG_plans", withExtension: "json") else { return nil } // TODO: Should throw, TEST FILE
             let data = try Data(contentsOf: url)
-
+            
             let plans: [ReadingPlan] = try loadPlans(from: data)
             
             for plan in plans {
                 if plan.id == id {
                     
-                    if let breadPlan = plan as? BreadPlan {
+                    if let breadPlan = plan as? BreadReadingPlan {
                         modelContext.insert(breadPlan) // Now the compiler sees a concrete @Model
                     } else if let dailyPlan = plan as? DailyPlan {
                         modelContext.insert(dailyPlan)
@@ -102,7 +135,7 @@ class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
             // 4) Decode concrete plan
             switch type {
             case .bread:
-                let plan = try decoder.decode(BreadPlan.self, from: planData)
+                let plan = try decoder.decode(BreadReadingPlan.self, from: planData)
                 results.append(plan)
             case .daily:
                 let plan = try decoder.decode(DailyPlan.self, from: planData)
@@ -114,8 +147,6 @@ class ReadingPlanManager: ObservableObject, ReadingPlanProviding {
         
         return results
     }
-    
-    
 }
 
 

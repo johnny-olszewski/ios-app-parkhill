@@ -14,7 +14,7 @@ struct DEBUGAppStateView: View {
     
     @Environment(\.modelContext) var modelContext
     @Binding var debugAppState: DEBUGAppState
-    @Query(sort: \BreadPlan.name) var breadPlans: [BreadPlan]
+    @Query(sort: \BreadReadingPlan.name) var breadPlans: [BreadReadingPlan]
 
     var body: some View {
         NavigationStack {
@@ -28,7 +28,7 @@ struct DEBUGAppStateView: View {
                     }
                 }
             }
-            .navigationDestination(for: BreadPlan.self) { breadPlan in
+            .navigationDestination(for: BreadReadingPlan.self) { breadPlan in
                 DEBUGBreadPlanView(breadPlan: breadPlan)
             }
         }
@@ -37,7 +37,7 @@ struct DEBUGAppStateView: View {
 
 struct DEBUGBreadPlanView: View {
     @Environment(\.modelContext) var modelContext
-    var breadPlan: BreadPlan
+    var breadPlan: BreadReadingPlan
     
     var body: some View {
         List {
@@ -48,13 +48,13 @@ struct DEBUGBreadPlanView: View {
                 }
             }
         }
-        .navigationDestination(for: BreadPlan.Day.self) { day in
+        .navigationDestination(for: BreadReadingPlan.Day.self) { day in
             DEBUGDayView(day: day)
         }
     }
     
     @ViewBuilder
-    func sectionSection(for section: BreadPlan.Section) -> some View {
+    func sectionSection(for section: BreadReadingPlan.Section) -> some View {
         Section("\(String(describing: index)): \(section.id)") {
             Text("\(section.title)")
             if let days = section.days {
@@ -66,7 +66,7 @@ struct DEBUGBreadPlanView: View {
     }
     
     @ViewBuilder
-    func dayCell(for day: BreadPlan.Day) -> some View {
+    func dayCell(for day: BreadReadingPlan.Day) -> some View {
         NavigationLink(value: day) {
             VStack(alignment: .leading) {
                 VStack(alignment: .leading) {
@@ -82,7 +82,7 @@ struct DEBUGBreadPlanView: View {
 
 struct DEBUGDayView: View {
     @Environment(\.modelContext) var modelContext
-    var day: BreadPlan.Day
+    var day: BreadReadingPlan.Day
     
     var body: some View {
         

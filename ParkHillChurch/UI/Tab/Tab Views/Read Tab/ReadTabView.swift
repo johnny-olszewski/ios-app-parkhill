@@ -13,10 +13,8 @@ struct ReadTabView: View {
     @Environment(\.debugAppState) private var debugAppState
     #endif
     
-    @State private var selectedSection: Section = .bread
+    @Environment(\.modelContext) var modelContext
     @State private var debugProvider: Bool = true
-    
-    let viewModel: ReadTabViewModel = .init()
     
     var body: some View {
         NavigationStack {
@@ -38,56 +36,22 @@ struct ReadTabView: View {
     @ViewBuilder var content: some View {
         
         VStack {
-            
-            SectionPicker
-            
-            switch selectedSection {
-            case .bread:
-                ReadingPlanView(viewModel: generateViewModel())
-                    .ignoresSafeArea(edges: [.bottom])
-                
-            case .read:
-                Text("Read Section")
-            }
+            ReadingPlanView(readingPlanManager: generateReadingPlanManager())
+                .ignoresSafeArea(edges: [.bottom])
         }
     }
     
-    @ViewBuilder
-    var SectionPicker: some View {
-        HStack {
-            ForEach(viewModel.availableSections) { section in
-                pickerButton(for: section)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    func pickerButton(for section: Section) -> some View {
-        Button {
-            selectedSection = section
-        } label: {
-            ZStack {
-                Capsule()
-                    .fill(selectedSection == section ? Color.primaryText : .clear)
-                    .stroke(Color.primaryText, lineWidth: 1)
-                    .frame(width: 60, height: 24)
-                
-                Text(section.rawValue.uppercased())
-                    .font(.system(size: 14, weight: .light))
-                    .foregroundStyle(selectedSection == section ? Color.primaryBackground : .primaryText)
-            }
-        }
-    }
-    
-    private func generateViewModel() -> ReadingPlanViewModel {
-        let readingPlanManager: ReadingPlanManager
+    private func generateReadingPlanManager() -> ReadingPlanManager {
+
         #if DEBUG
-        readingPlanManager = debugAppState.isUsingDebugReadingPlanProvider ? DEBUGReadingPlanManager() : ReadingPlanManager()
+        return  DEBUGReadingPlanManager(
+            planId: ParkHillSharedConstants.ReadingPlan.bread2025Id,
+            modelContext: modelContext,
+            shouldUseDebugReadingPlanManager: debugAppState.isUsingDebugReadingPlanProvider
+        )
         #else
-        readingPlanManager = ReadingPlanManager()
-        #endif
-        
-        return ReadingPlanViewModel(planId: ParkHillSharedConstants.ReadingPlan.bread2025Id, readingPlanManager: readingPlanManager)
+        return  ReadingPlanManager(planId: ParkHillSharedConstants.ReadingPlan.bread2025Id, modelContext: modelContext)
+        #endif        
     }
 }
 

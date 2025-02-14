@@ -12,16 +12,26 @@ import SwiftData
 
 class DEBUGReadingPlanManager: ReadingPlanManager {
     
-    override init() {
-        super.init()
+    @Published var shouldUseDebugReadingPlanManager: Bool
+    
+    init(planId: String, modelContext: ModelContext, shouldUseDebugReadingPlanManager: Bool) {
+        self.shouldUseDebugReadingPlanManager = shouldUseDebugReadingPlanManager
+        super.init(planId: planId, modelContext: modelContext)
     }
     
-    override func loadReadingPlan(with id: String, from modelContext: ModelContext) throws -> ReadingPlan?  {
-        print("DEBUGReadingPlanManagerloadReadingPlan(with: \(id) from: ModelContext)")
+    override func loadReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan?  {
+        if !shouldUseDebugReadingPlanManager {
+            return try? super.loadReadingPlan(with: id, from: modelContext)
+        }
         return nil
     }
     
-    override func fetchReadingPlans(with planId: String, from modelContext: ModelContext) throws -> ReadingPlan? { return nil }
+    override func fetchReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
+        if !shouldUseDebugReadingPlanManager {
+            return try? super.fetchReadingPlan(with: planId, from: modelContext)
+        }
+        return nil
+    }
 }
 
 #endif

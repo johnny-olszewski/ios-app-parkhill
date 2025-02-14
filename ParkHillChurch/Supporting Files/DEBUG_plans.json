@@ -1,455 +1,458 @@
 {
-  "plans": [
-    {
-      "type": "bread",
-      "id": "ph_bread_2025",
-      "name": "Park Hill Bread 2025",
-      "description": "A year praying through the whole bible in unity.",
-      "update_url": "https://www.parkhillsd.church/update",
-      "version": 1.0,
-      "sections": [
-          {
-              "index": 0,
-              "title": "Creation & The Fall",
-              "days": [
-                  {
-                    "date": "2025-01-01",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [1, 2, 3]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [1]
-                      }
+    "plans": [
+        {
+            "type": "bread",
+            "id": "ph_bread_2025",
+            "name": "Park Hill Bread 2025",
+            "description": "A year praying through the whole bible in unity.",
+            "update_url": "https://www.parkhillsd.church/update",
+            "version": 1.0,
+            "sections": [
+                {
+                    "index": 0,
+                    "title": "Creation & The Fall",
+                    "days": [
+                        {
+                            "dayOfPlan": 0,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [1, 2, 3]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [1]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 1,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [4, 5, 6, 7]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [2]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 2,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [8, 9, 10, 11]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [3]
+                                }
+                            ]
+                        }
                     ]
-                  },
-                  {
-                    "date": "2025-01-02",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [4, 5, 6, 7]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [2]
-                      }
+                },
+                {
+                    "index": 1,
+                    "title": "Abrahamic Convenant",
+                    "days": [
+                        {
+                            "dayOfPlan": 3,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [12, 13, 14, 15]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [4]
+                                }
+                            ]
+                        },
+                        {
+                            
+                              "dayOfPlan": 4,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [16, 17, 18]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [5]
+                                }
+                            ]
+                        },
+                        {
+                              "dayOfPlan": 5,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [19, 20, 21]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [6]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 6,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [22, 23, 24]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [8]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 7,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [25, 26, 27, 28]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [8]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 8,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [29, 30, 31]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [9]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 9,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [32, 33, 34]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [10]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 10,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [35, 36, 37]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [11]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 11,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [38, 39, 40]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [12]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 12,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [41, 42]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [13]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 13,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [43, 44, 45]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [14]
+                                }
+                            ]
+                        },
+                        {
+                            
+                              "dayOfPlan": 14,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [46, 47]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [15]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 15,
+                            "passages": [
+                                {
+                                    "book": "Genesis",
+                                    "chapters": [48, 49, 50]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [16]
+                                }
+                            ]
+                        }
                     ]
-                  },
-                  {
-                    "date": "2025-01-03",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [8, 9, 10, 11]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [3]
-                      }
+                },
+                {
+                    "index": 2,
+                    "title": "The Exodus From Egypt",
+                    "days": [
+                        {
+                            "dayOfPlan": 16,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [1, 2, 3]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [17]
+                                }
+                            ]
+                        },
+                        {
+                            
+                              "dayOfPlan": 17,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [4, 5, 6]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [18]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 18,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [7, 8, 9]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [19]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 19,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [10, 11, 12]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [20]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 20,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [13, 14, 15]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [21]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 21,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [16, 17, 18]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [22]
+                                }
+                            ]
+                        }
                     ]
-                  }
-              ]
-          },
-          {
-              "index": 1,
-              "title": "Abrahamic Convenant",
-              "days": [
-                  {
-                    "date": "2025-01-04",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [12, 13, 14, 15]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [4]
-                      }
+                },
+                {
+                    "index": 3,
+                    "title": "The Covenant at Mount Sinai",
+                    "days": [
+                        {
+                            "dayOfPlan": 22,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [19, 20, 21]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [23]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 23,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [22, 23, 24]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [24]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 24,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [25, 26, 27]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [25]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 25,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [28, 29]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [26]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 26,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [30, 31]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [27]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 27,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [32, 33, 34]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [28]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 28,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [35, 36, 37, 38, 39, 40]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [29]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 29,
+                            "passages": [
+                                {
+                                    "book": "Leviticus",
+                                    "chapters": [1, 2, 3, 4]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [30]
+                                }
+                            ]
+                        },
+                        {
+                            "dayOfPlan": 30,
+                            "passages": [
+                                {
+                                    "book": "Exodus",
+                                    "chapters": [5, 6, 7]
+                                },
+                                {
+                                    "book": "Psalms",
+                                    "chapters": [31]
+                                }
+                            ]
+                        }
                     ]
-                  },
-                  {
-                    "date": "2025-01-05",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [16, 17, 18]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [5]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-06",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [19, 20, 21]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [6]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-07",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [22, 23, 24]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [8]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-08",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [25, 26, 27, 28]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [8]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-09",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [29, 30, 31]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [9]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-10",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [32, 33, 34]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [10]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-11",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [35, 36, 37]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [11]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-12",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [38, 39, 40]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [12]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-13",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [41, 42]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [13]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-14",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [43, 44, 45]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [14]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-15",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [46, 47]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [15]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-16",
-                    "passages": [
-                      {
-                        "book": "Genesis",
-                        "chapters": [48, 49, 50]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [16]
-                      }
-                    ]
-                  }
-              ]
-          },
-          {
-              "index": 2,
-              "title": "The Exodus From Egypt",
-              "days": [
-                  {
-                    "date": "2025-01-17",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [1, 2, 3]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [17]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-18",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [4, 5, 6]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [18]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-19",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [7, 8, 9]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [19]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-20",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [10, 11, 12]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [20]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-21",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [13, 14, 15]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [21]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-22",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [16, 17, 18]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [22]
-                      }
-                    ]
-                  }
-              ]
-          },
-          {
-              "index": 3, 
-              "title": "The Covenant at Mount Sinai",
-              "days": [
-                  {
-                    "date": "2025-01-23",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [19, 20, 21]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [23]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-24",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [22, 23, 24]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [24]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-25",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [25, 26, 27]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [25]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-26",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [28, 29]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [26]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-27",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [30, 31]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [27]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-28",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [32, 33, 34]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [28]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-29",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [35, 36, 37, 38, 39, 40]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [29]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-30",
-                    "passages": [
-                      {
-                        "book": "Leviticus",
-                        "chapters": [1, 2, 3, 4]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [30]
-                      }
-                    ]
-                  },
-                  {
-                    "date": "2025-01-31",
-                    "passages": [
-                      {
-                        "book": "Exodus",
-                        "chapters": [5, 6, 7]
-                      },
-                      {
-                        "book": "Psalms",
-                        "chapters": [31]
-                      }
-                    ]
-                  }
-              ]
-          }
-      ]
-    },
-    {
-      "type": "daily",
-      "id": "plan_gospels",
-      "category": "group",
-      "name": "The Gospels",
-      "description": "A month through the Gospels."
-    },
-    {
-      "type": "daily",
-      "id": "plan_advent",
-      "category": "theme",
-      "name": "Advent",
-      "description": "An advent guide."
-    }
-  ]
+                }
+            ]
+        },
+        {
+            "type": "daily",
+            "id": "plan_gospels",
+            "category": "group",
+            "name": "The Gospels",
+            "description": "A month through the Gospels."
+        },
+        {
+            "type": "daily",
+            "id": "plan_advent",
+            "category": "theme",
+            "name": "Advent",
+            "description": "An advent guide."
+        }
+    ]
 }

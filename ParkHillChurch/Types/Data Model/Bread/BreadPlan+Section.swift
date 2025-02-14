@@ -9,7 +9,7 @@
 import Foundation
 import SwiftData
 
-extension BreadPlan {
+extension BreadReadingPlan {
     
     @Model
     final class Section: Decodable, Identifiable {
@@ -19,7 +19,7 @@ extension BreadPlan {
         var title: String
         @Relationship(deleteRule: .cascade, inverse: \Day.section)
         var days: [Day]?
-        var plan: BreadPlan?
+        var plan: BreadReadingPlan?
         
         // MARK: - Designated Initializer
         init(index: Int, title: String, days: [Day]? = nil) {
