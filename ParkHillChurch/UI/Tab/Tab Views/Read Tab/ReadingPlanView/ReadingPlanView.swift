@@ -37,22 +37,23 @@ struct ReadingPlanView: View {
                             ReadingPlanDayView(day: day) {
                                 isShowingDaySelector.toggle()
                             }
+                            .border(.red)
+                            .background(Color.yellow)
                             .id(day.dayOfPlan)
                             .containerRelativeFrame(.horizontal, count: 1, spacing: 0, alignment: .center)
                         }
                     }
                 }
                 .scrollTargetLayout()
-                .onChange(of: selectedDayOfPlan) { oldValue, newValue in
-                    print("OLD: \(oldValue)\tNEW: \(newValue)")
-                }
             }
         }
         .scrollPosition(id: $selectedDayOfPlan)
+        .toolbarBackgroundVisibility(.visible)
+        .toolbarBackground(.primaryBackground, for: .navigationBar)
         .safeAreaInset(edge: .top) {
             header
-                .padding()
-        }
+                .padding(.horizontal)
+                .border(.blue)        }
         .scrollTargetBehavior(.viewAligned)
         .sheet(isPresented: $isShowingDaySelector) {
             if let readingPlan = readingPlanManager.readingPlan {
@@ -71,47 +72,64 @@ extension ReadingPlanView {
                 isShowingDaySelector.toggle()
             } label: {
                 HStack {
-                    DateLabel(value: selectedDayOfPlan)
-                        .animation(.easeInOut, value: selectedDayOfPlan)
-                        .font(.system(size: 26, weight: .bold))
-                        .padding(.trailing)
                     
-                    VStack(alignment: .leading) {
-                        Text(visibleDay.date.formatted(Date.FormatStyle().weekday(.wide)))
-                            .font(.system(size: 13, weight: .light))
+                    HStack {
+                        ValueLabel(value: selectedDayOfPlan)
+                            .animation(.easeInOut, value: selectedDayOfPlan)
+                            .font(.system(size: 42, weight: .bold))
+                            .padding(.trailing, 8)
                             .foregroundStyle(.primaryText)
-                        Text(visibleDay.date.formatted(Date.FormatStyle().month(.wide).year()))
-                            .font(.system(size: 15, weight: .thin))
-                            .foregroundStyle(.primaryText)
+                            .monospacedDigit() // ✅ Ensures numbers take up equal width
+                            .frame(width: 65, alignment: .trailing) // ✅ Adjust width to fit expected digits
+                            .border(.black)
+                        
+                        VStack(alignment: .leading) {
+                            Text(visibleDay.date.formatted(Date.FormatStyle().weekday(.wide)))
+                                .font(.system(size: 18, weight: .light).lowercaseSmallCaps())
+                                .foregroundStyle(.primaryText)
+                            Text(visibleDay.date.formatted(Date.FormatStyle().month(.wide).year()))
+                                .font(.system(size: 20, weight: .thin).lowercaseSmallCaps())
+                                .foregroundStyle(.primaryText)
+                        }
+                        
+                        
+                        
+                        Button {
+                            visibleDay.dateCompleted = Date()
+                        } label: {
+                            Image(systemName: "checkmark")
+                                .foregroundStyle(visibleDay.dateCompleted != nil ? .primaryText.opacity(0.5) : .green)
+                                .font(.system(size: 24))
+                        }
                     }
+                    .padding(.trailing)
                     
                     Spacer()
                     
-                    Button {
-                        visibleDay.dateCompleted = Date()
-                    } label: {
-                        Image(systemName: "checkmark")
-                            .foregroundStyle(visibleDay.dateCompleted != nil ? .green : .primaryText.opacity(0.5))
+                    HStack(spacing: 16) {
+                        
+                        chevronButton(-1)
+                        
+                        chevronButton(1)
                     }
                 }
             }
         }
     }
+    
+    @ViewBuilder
+    private func chevronButton(_ increment: Int) -> some View {
+        Button {
+            self.selectedDayOfPlan? += increment
+        } label: {
+            Image(systemName: increment < 0 ? "chevron.left" : "chevron.right")
+                .font(.system(size: 20))
+                .foregroundStyle(.primaryText)
+        }
+    }
 }
 
-struct DateLabel: View, Animatable {
-    
-    var value: Int
-    
-    var animatableData: Double {
-        get { Double(value) }
-        set { value = Int(newValue) }
-    }
-    
-    var body: some View {
-        Text("\(value)")
-    }
-}
+
 
 //#Preview {
 //    ReadingPlanView(planId: "bread_2025")

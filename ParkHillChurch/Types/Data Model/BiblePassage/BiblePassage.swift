@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct BiblePassage: Codable, Hashable {
+struct BiblePassage: Codable, Hashable, Identifiable {
+    let id: UUID = .init()
     let book: BibleBook
     let chapters: [Int]?
     let verses: [Int: VerseRange]?
