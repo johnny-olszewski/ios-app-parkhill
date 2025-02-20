@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ReadingPlanDaySelector: View {
+struct ReadingPlanDaySelectorView: View {
     
     let readingPlan: ReadingPlan
     

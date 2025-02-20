@@ -29,33 +29,22 @@ struct ReadingPlanView: View {
     }
     
     var body: some View {
-        ScrollView(.horizontal) {
-            ScrollViewReader { proxy in
-                LazyHStack {
-                    if let days = readingPlanManager.getAllDays() {
-                        ForEach(days) { day in
-                            ReadingPlanDayView(day: day) {
-                                isShowingDaySelector.toggle()
-                            }
-                            .id(day.dayOfPlan)
-                            .containerRelativeFrame(.horizontal, count: 1, spacing: 0, alignment: .center)
-                        }
-                    }
+        if let day = selectedDay {
+            VStack {
+                header
+                    .padding(.horizontal)
+                
+                ReadingPlanDayView(day: day) {
+                    isShowingDaySelector.toggle()
                 }
-                .scrollTargetLayout()
+            }
+            .sheet(isPresented: $isShowingDaySelector) {
+                if let readingPlan = readingPlanManager.readingPlan {
+                    ReadingPlanDaySelectorView(readingPlan: readingPlan, isPresented: $isShowingDaySelector, selectedDay: $selectedDayOfPlan)
+                }
             }
         }
-        .scrollPosition(id: $selectedDayOfPlan)
-        .safeAreaInset(edge: .top) {
-            header
-                .padding(.horizontal)
-        }
-        .scrollTargetBehavior(.viewAligned)
-        .sheet(isPresented: $isShowingDaySelector) {
-            if let readingPlan = readingPlanManager.readingPlan {
-                ReadingPlanDaySelector(readingPlan: readingPlan, isPresented: $isShowingDaySelector, selectedDay: $selectedDayOfPlan)
-            }
-        }
+        
     }
 }
 
@@ -86,18 +75,17 @@ extension ReadingPlanView {
                                 .font(.system(size: 20, weight: .thin).lowercaseSmallCaps())
                                 .foregroundStyle(.primaryText)
                         }
-                        
-                        
-                        
-                        Button {
-                            visibleDay.dateCompleted = Date()
-                        } label: {
-                            Image(systemName: "checkmark")
-                                .foregroundStyle(visibleDay.dateCompleted != nil ? .primaryText.opacity(0.5) : .green)
-                                .font(.system(size: 24))
-                        }
                     }
-                    .padding(.trailing)
+                    
+                    Spacer()
+                    
+                    Button {
+                        visibleDay.dateCompleted = visibleDay.dateCompleted != nil ? Date() : nil
+                    } label: {
+                        Image(systemName: "checkmark")
+                            .foregroundStyle(visibleDay.dateCompleted != nil ? .green : .primaryText.opacity(0.5))
+                            .font(.system(size: 24))
+                    }
                     
                     Spacer()
                     
