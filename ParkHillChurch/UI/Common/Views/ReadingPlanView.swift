@@ -37,8 +37,6 @@ struct ReadingPlanView: View {
                             ReadingPlanDayView(day: day) {
                                 isShowingDaySelector.toggle()
                             }
-                            .border(.red)
-                            .background(Color.yellow)
                             .id(day.dayOfPlan)
                             .containerRelativeFrame(.horizontal, count: 1, spacing: 0, alignment: .center)
                         }
@@ -48,12 +46,10 @@ struct ReadingPlanView: View {
             }
         }
         .scrollPosition(id: $selectedDayOfPlan)
-        .toolbarBackgroundVisibility(.visible)
-        .toolbarBackground(.primaryBackground, for: .navigationBar)
         .safeAreaInset(edge: .top) {
             header
                 .padding(.horizontal)
-                .border(.blue)        }
+        }
         .scrollTargetBehavior(.viewAligned)
         .sheet(isPresented: $isShowingDaySelector) {
             if let readingPlan = readingPlanManager.readingPlan {
@@ -81,7 +77,6 @@ extension ReadingPlanView {
                             .foregroundStyle(.primaryText)
                             .monospacedDigit() // ✅ Ensures numbers take up equal width
                             .frame(width: 65, alignment: .trailing) // ✅ Adjust width to fit expected digits
-                            .border(.black)
                         
                         VStack(alignment: .leading) {
                             Text(visibleDay.date.formatted(Date.FormatStyle().weekday(.wide)))

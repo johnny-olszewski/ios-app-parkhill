@@ -53,7 +53,6 @@ struct ReadingPlanDayView: View {
                 .padding(.horizontal)
             }
         }
-        .border(.yellow)
         .scrollClipDisabled(false)
         .fullScreenCover(item: $selectedPassage) { passage in
             Text("\(passage)")

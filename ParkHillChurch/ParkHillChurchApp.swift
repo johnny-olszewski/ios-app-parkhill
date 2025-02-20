@@ -32,7 +32,7 @@ struct ParkHillChurchApp: App {
     var body: some Scene {
         
         WindowGroup {
-            ParkHillTabContainer()
+            ParkHillTabView()
             #if DEBUG
                 .debugSheet {
                     DEBUGAppStateView(debugAppState: $debugAppState)

@@ -7,54 +7,47 @@
 
 import SwiftUI
 
-struct ReadTabView: View {
+struct BreadTabView: View {
     
-    #if DEBUG
+#if DEBUG
     @Environment(\.debugAppState) private var debugAppState
-    #endif
+#endif
     
     @Environment(\.modelContext) var modelContext
-    @State private var debugProvider: Bool = true
     
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .top) {
-                Color.primaryBackground
-                    .edgesIgnoringSafeArea(.all)
-                
-                content
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Image(systemName: "person.circle")
-                        .font(.system(size: 18))
+            ReadingPlanView(readingPlanManager: generateReadingPlanManager())
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Image(systemName: "person.circle")
+                            .font(.system(size: 18))
+                    }
                 }
-            }
         }
     }
     
     @ViewBuilder var content: some View {
         
         VStack {
-            ReadingPlanView(readingPlanManager: generateReadingPlanManager())
-                .ignoresSafeArea(edges: [.bottom])
+            
         }
     }
     
     private func generateReadingPlanManager() -> ReadingPlanManager {
-
-        #if DEBUG
+        
+#if DEBUG
         return  DEBUGReadingPlanManager(
             planId: ParkHillSharedConstants.ReadingPlan.bread2025Id,
             modelContext: modelContext,
             shouldUseDebugReadingPlanManager: debugAppState.isUsingDebugReadingPlanProvider
         )
-        #else
+#else
         return  ReadingPlanManager(planId: ParkHillSharedConstants.ReadingPlan.bread2025Id, modelContext: modelContext)
-        #endif        
+#endif
     }
 }
 
 #Preview {
-    ReadTabView()
+    BreadTabView()
 }
