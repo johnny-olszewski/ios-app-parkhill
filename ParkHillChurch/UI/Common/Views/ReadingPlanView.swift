@@ -53,10 +53,10 @@ extension ReadingPlanView {
     @ViewBuilder
     private var header: some View {
         if let visibleDay = selectedDay, let selectedDayOfPlan {
-            Button {
-                isShowingDaySelector.toggle()
-            } label: {
-                HStack {
+            HStack {
+                Button {
+                    isShowingDaySelector.toggle()
+                } label: {
                     
                     HStack {
                         ValueLabel(value: selectedDayOfPlan)
@@ -76,25 +76,25 @@ extension ReadingPlanView {
                                 .foregroundStyle(.primaryText)
                         }
                     }
+                }
+                
+                Spacer()
+                
+                Button {
+                    visibleDay.dateCompleted = visibleDay.dateCompleted != nil ? Date() : nil
+                } label: {
+                    Image(systemName: "checkmark")
+                        .foregroundStyle(visibleDay.dateCompleted != nil ? .green : .primaryText.opacity(0.5))
+                        .font(.system(size: 24))
+                }
+                
+                Spacer()
+                
+                HStack(spacing: 16) {
                     
-                    Spacer()
+                    chevronButton(-1)
                     
-                    Button {
-                        visibleDay.dateCompleted = visibleDay.dateCompleted != nil ? Date() : nil
-                    } label: {
-                        Image(systemName: "checkmark")
-                            .foregroundStyle(visibleDay.dateCompleted != nil ? .green : .primaryText.opacity(0.5))
-                            .font(.system(size: 24))
-                    }
-                    
-                    Spacer()
-                    
-                    HStack(spacing: 16) {
-                        
-                        chevronButton(-1)
-                        
-                        chevronButton(1)
-                    }
+                    chevronButton(1)
                 }
             }
         }
@@ -102,13 +102,18 @@ extension ReadingPlanView {
     
     @ViewBuilder
     private func chevronButton(_ increment: Int) -> some View {
+        
+        let buttonIsDisabled: Bool = (increment < 0 && selectedDayOfPlan ?? 0 <= 0) || (increment > 0 && readingPlanManager.getNumberOFDays() == (selectedDayOfPlan ?? 0)-1)
+        
         Button {
             self.selectedDayOfPlan? += increment
         } label: {
             Image(systemName: increment < 0 ? "chevron.left" : "chevron.right")
                 .font(.system(size: 20))
                 .foregroundStyle(.primaryText)
+                .opacity(buttonIsDisabled ? 0.5 : 1)
         }
+        .disabled(buttonIsDisabled)
     }
 }
 

@@ -45,6 +45,10 @@ class ReadingPlanManager: ObservableObject {
         return nil
     }
     
+    func getNumberOFDays() -> Int {
+        getAllDays()?.count ?? 0
+    }
+    
     // MARK: - ReadingPlanProviding
     
     func fetchReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {

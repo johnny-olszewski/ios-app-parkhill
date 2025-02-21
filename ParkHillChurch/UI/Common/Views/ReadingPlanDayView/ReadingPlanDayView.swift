@@ -42,7 +42,6 @@ struct ReadingPlanDayView: View {
                             
                         }
                         .padding()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .containerRelativeFrame(.horizontal, count: 1, spacing: 0, alignment: .top)
                     }
                 }
@@ -51,7 +50,6 @@ struct ReadingPlanDayView: View {
         }
         .scrollPosition(id: $selectedSection)
         .scrollTargetBehavior(.paging)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .safeAreaInset(edge: .top) {
             VStack(spacing: 16) {
                 header
@@ -68,24 +66,28 @@ struct ReadingPlanDayView: View {
     var header: some View {
         HStack {
             ForEach(Section.allCases, id: \.self) { section in
-                selectedSection == section ?
-                Button {
-                } label: {
-                    sectionTitle("\(section.title)")
-                } :
                 Button {
                     selectedSection = section
                 } label: {
-                    sectionTitle("\(section.title.first!)")
+                    sectionTitle(section.title)
                 }
             }
+            
+            Spacer()
         }
     }
     
     func sectionTitle(_ title: String) -> some View {
-        Text(title)
-            .font(.system(size: 28).bold().lowercaseSmallCaps().monospacedDigit())
-            .foregroundStyle(.primaryText.opacity(0.7))
+        HStack {
+            Text(title.prefix(1))
+            
+            if selectedSection?.title == title {
+                Text(title.dropFirst())
+                    .transition(.asymmetric(insertion: .push(from: .trailing), removal: .identity))
+            }
+        }
+        .font(.system(size: 28).bold().lowercaseSmallCaps().monospacedDigit())
+        .foregroundStyle(.primaryText.opacity(0.7))
     }
     
     func sectionCaption(_ caption: String) -> some View {
@@ -109,20 +111,6 @@ struct ReadingPlanDayView: View {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //#Preview {
 //    ReadingPlanDayView()

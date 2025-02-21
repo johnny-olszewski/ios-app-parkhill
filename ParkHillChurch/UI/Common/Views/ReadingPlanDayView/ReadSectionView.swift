@@ -15,7 +15,6 @@ struct ReadSectionView: View {
     var passages: [BiblePassage]
     
     var body: some View {
-        Text("Read Section")
         
         VStack {
             ForEach(passages, id: \.self) { passage in
@@ -42,21 +41,17 @@ struct ReadSectionView: View {
                     .foregroundStyle(.primaryText)
                 
                 Spacer()
-                
-                Button {
-                    
-                } label: {
-                    HStack {
-                        Image(systemName: "book.pages")
-                            .font(.system(size: 18))
-                    }
-                    .foregroundStyle(.primaryText)
-                }
             }
             .padding()
             .background {
                 Color.brown.opacity(0.1)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            .overlay(alignment: .bottomTrailing) {
+                Image(systemName: "book.pages")
+                    .font(.system(size: 16))
+                    .foregroundStyle(.brown.opacity(0.7))
+                    .padding()
             }
         }
     }
