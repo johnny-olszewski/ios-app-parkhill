@@ -67,7 +67,7 @@ struct ReadingPlanView: View {
                     
                     ScrollView {
                         
-                        LazyVStack(spacing: 16) {
+                        LazyVStack {
                             
                             ReadingPlanHeader(
                                 imageName: Constants.headerImageName,
@@ -82,7 +82,7 @@ struct ReadingPlanView: View {
                             }
                         }
                     }
-                    .ignoresSafeArea()
+                    .ignoresSafeArea(edges: .top)
                     .onScrollGeometryChange(
                         for: CGFloat.self,
                         of: { scrollGeometry in
@@ -97,7 +97,10 @@ struct ReadingPlanView: View {
                     renderHeader(readingPlan.name)
                 }
                 .navigationDestination(for: BreadReadingPlan.Day.self) { day in
-                    Text("\(day.date)")
+                    
+                    let selectedStep: BreadStep = day.dateCompleted == nil ? .breathe : .read
+                    
+                    BreadWizardView(selectedStep: selectedStep, day: day)
                 }
             }
         }

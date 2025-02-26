@@ -43,10 +43,12 @@ struct ReadingPlanListView: View {
     }
     
     private func dayCell(for day: BreadReadingPlan.Day) -> some View {
-        HStack {
+        HStack(alignment: .center) {
             
             Text("\(day.date.formatted(Date.FormatStyle().day(.twoDigits)))")
                 .font(.largeTitle)
+                .monospacedDigit()
+                .frame(alignment: .trailing)
             
             VStack(alignment: .leading) {
                 Text("Day \(day.dayOfPlan)")
@@ -61,10 +63,12 @@ struct ReadingPlanListView: View {
             
             Spacer()
             
+            // TODO: Consolidate
             Button {
-                
+                day.toggleDate()
             } label: {
                 Image(systemName: "checkmark")
+                    .font(.system(size: 24))
                     .foregroundStyle(day.dateCompleted != nil ? .green : .primaryText.opacity(0.5))
             }
         }

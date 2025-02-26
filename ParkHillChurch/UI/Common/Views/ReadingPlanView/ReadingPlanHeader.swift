@@ -61,7 +61,8 @@ struct ReadingPlanHeader: View {
                 }
                 
                 Text(title)
-                    .font(.largeTitle)
+                    .font(.largeTitle.lowercaseSmallCaps())
+                    .kerning(5)
                     .fontWeight(.bold)
                     .foregroundStyle(.primaryText)
                 
