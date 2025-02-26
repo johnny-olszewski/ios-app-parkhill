@@ -54,6 +54,14 @@ extension BreadReadingPlan {
             
             self.init(id: dayID, dayOfPlan: dayOfPlan, date: newDate, passages: passages)
         }
+        
+        public func toggleDate() {
+            if dateCompleted == nil {
+                dateCompleted = Date()
+            } else {
+                dateCompleted = nil
+            }
+        }
     }
 }
 

@@ -3,7 +3,7 @@
         {
             "type": "bread",
             "id": "ph_bread_2025",
-            "name": "Park Hill Bread 2025",
+            "name": "Bread",
             "description": "A year praying through the whole bible in unity.",
             "update_url": "https://www.parkhillsd.church/update",
             "version": 1.0,
@@ -440,19 +440,5 @@
                 }
             ]
         },
-        {
-            "type": "daily",
-            "id": "plan_gospels",
-            "category": "group",
-            "name": "The Gospels",
-            "description": "A month through the Gospels."
-        },
-        {
-            "type": "daily",
-            "id": "plan_advent",
-            "category": "theme",
-            "name": "Advent",
-            "description": "An advent guide."
-        }
     ]
 }

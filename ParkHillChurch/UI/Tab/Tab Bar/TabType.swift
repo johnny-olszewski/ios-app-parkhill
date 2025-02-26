@@ -8,27 +8,33 @@
 
 import SwiftUI
 
-enum TabType {
+enum TabType: CaseIterable {
     case home
-    case read
+    case bread
     case watch
-    case more
+    case community
+    case directory
+    case contact
     
     var tabBarTitle: String {
         switch self {
         case .home: "Home"
-        case .read: "Read"
+        case .bread: "Read"
         case .watch: "Watch"
-        case .more: "More"
+        case .community: "Community"
+        case .directory: "Directory"
+        case .contact: "Contact"
         }
     }
     
     var tabBarImageName: String {
         switch self {
             case .home: "house"
-            case .read: "book"
+            case .bread: "book"
             case .watch: "playpause"
-            case .more: "ellipsis"
+            case .community: "person"
+            case .directory: "person"
+            case .contact: "envelope"
         }
     }
     
@@ -36,9 +42,11 @@ enum TabType {
     var tabView: some View {
         switch self {
             case .home: HomeTabView()
-            case .read: ReadTabView()
+            case .bread: BreadTabView()
             case .watch: WatchTabView()
-            case .more: MoreTabView()
+            case .community: Text("Community")
+            case .directory: Text("Directory")
+            case .contact: Text("Contact")
         }
     }
 }

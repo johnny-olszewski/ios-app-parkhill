@@ -11,14 +11,9 @@ import SwiftData
 @main
 struct ParkHillChurchApp: App {
     
-    #if DEBUG
-    @State var debugAppState: DEBUGAppState = .init()
-    #endif
-    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             BreadReadingPlan.self,
-            DailyPlan.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -32,12 +27,11 @@ struct ParkHillChurchApp: App {
     var body: some Scene {
         
         WindowGroup {
-            ParkHillTabContainer()
+            ParkHillTabView()
             #if DEBUG
                 .debugSheet {
-                    DEBUGAppStateView(debugAppState: $debugAppState)
+                    DEBUGAppStateView()
                 }
-                .environment(\.debugAppState, debugAppState)
             #endif
         }
         .modelContainer(sharedModelContainer)

@@ -14,10 +14,10 @@ class ReadingPlanManager: ObservableObject {
     
     let logger = Logger.readingPlanManager
     let planId: String
-    let modelContext: ModelContext
-    @Published var readingPlan: ReadingPlan?
+    let modelContext: ModelContext?
+    @Published var readingPlan: BreadReadingPlan?
     
-    init(planId: String, modelContext: ModelContext) {
+    init(planId: String, modelContext: ModelContext? = nil) {
         self.planId = planId
         self.modelContext = modelContext
         
@@ -34,7 +34,7 @@ class ReadingPlanManager: ObservableObject {
     }
     
     func getAllDays() -> [BreadReadingPlan.Day]? {
-        if let breadReadingPlan = readingPlan as? BreadReadingPlan, let sections = breadReadingPlan.sections {
+        if let sections = readingPlan?.sections {
             let allDays: [BreadReadingPlan.Day] = sections.flatMap { section in
                 section.days ?? []
             }
@@ -45,9 +45,13 @@ class ReadingPlanManager: ObservableObject {
         return nil
     }
     
+    func getNumberOfDays() -> Int {
+        getAllDays()?.count ?? 0
+    }
+    
     // MARK: - ReadingPlanProviding
     
-    func fetchReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
+    func fetchReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> BreadReadingPlan? {
         let id = id ?? self.planId
         let modelContext = modelContext ?? self.modelContext
         
@@ -56,10 +60,16 @@ class ReadingPlanManager: ObservableObject {
         )
         
         do {
-            let matchingPlans = try modelContext.fetch(descriptor)
-            if matchingPlans.isEmpty {
-                return try loadReadingPlan(with: id, from: modelContext)
+            var matchingPlans: [BreadReadingPlan] = []
+            
+            if let modelContext {
+                matchingPlans = try modelContext.fetch(descriptor)
             }
+            
+            if matchingPlans.isEmpty {
+                return try loadReadingPlanFromJSON(with: id, from: modelContext)
+            }
+            
             return matchingPlans.first
         } catch {
             print("ERROR: \(error)")
@@ -67,7 +77,7 @@ class ReadingPlanManager: ObservableObject {
         }
     }
     
-    func loadReadingPlan(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> ReadingPlan? {
+    func loadReadingPlanFromJSON(with id: String? = nil, from modelContext: ModelContext? = nil) throws -> BreadReadingPlan? {
         let id = id ?? self.planId
         let modelContext = modelContext ?? self.modelContext
         
@@ -75,17 +85,15 @@ class ReadingPlanManager: ObservableObject {
             guard let url = Bundle.main.url(forResource: "DEBUG_plans", withExtension: "json") else { return nil } // TODO: Should throw, TEST FILE
             let data = try Data(contentsOf: url)
             
-            let plans: [ReadingPlan] = try loadPlans(from: data)
+            let plans: [BreadReadingPlan] = try decodePlans(from: data)
             
             for plan in plans {
                 if plan.id == id {
                     
-                    if let breadPlan = plan as? BreadReadingPlan {
-                        modelContext.insert(breadPlan) // Now the compiler sees a concrete @Model
-                    } else if let dailyPlan = plan as? DailyPlan {
-                        modelContext.insert(dailyPlan)
+                    if let modelContext {
+                        modelContext.insert(plan)
                     } else {
-                        // Unknown plan type; do nothing or handle error
+                        logger.debug("No model context provided. Cannot fetch reading plan.")
                     }
                     
                     return plan
@@ -99,7 +107,7 @@ class ReadingPlanManager: ObservableObject {
         return nil
     }
     
-    func loadPlans(from jsonData: Data) throws -> [ReadingPlan] {
+    func decodePlans(from jsonData: Data) throws -> [BreadReadingPlan] {
         // 1) Parse top-level as dictionary
         let topLevel = try JSONSerialization.jsonObject(with: jsonData, options: [])
         guard let dictionary = topLevel as? [String: Any] else {
@@ -114,17 +122,12 @@ class ReadingPlanManager: ObservableObject {
         }
         
         let decoder = JSONDecoder()
-        var results: [ReadingPlan] = []
+        var results: [BreadReadingPlan] = []
         
         // 3) Convert each plan dict → Data → decode by "type"
         for rawPlan in rawPlans {
             // Convert to Data
             let planData = try JSONSerialization.data(withJSONObject: rawPlan)
-            
-            // Peek at "type"
-            guard let type: ReadingPlanType =  .init(rawValue: rawPlan["type"] as? String ?? "unknown") else {
-                continue // skip if missing
-            }
             
             guard let planID = rawPlan["id"] as? String else {
                 continue
@@ -133,16 +136,8 @@ class ReadingPlanManager: ObservableObject {
             decoder.userInfo[.planID] = planID
             
             // 4) Decode concrete plan
-            switch type {
-            case .bread:
-                let plan = try decoder.decode(BreadReadingPlan.self, from: planData)
-                results.append(plan)
-            case .daily:
-                let plan = try decoder.decode(DailyPlan.self, from: planData)
-                results.append(plan)
-            case .unknown:
-                print("Unknown plan type '\(type)'; skipping.")
-            }
+            let plan = try decoder.decode(BreadReadingPlan.self, from: planData)
+            results.append(plan)
         }
         
         return results
