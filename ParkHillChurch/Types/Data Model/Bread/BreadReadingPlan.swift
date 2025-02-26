@@ -10,7 +10,10 @@ import Foundation
 import SwiftData
 
 @Model
-final class BreadReadingPlan: Decodable, ReadingPlan, Identifiable, Hashable {
+final class BreadReadingPlan: Decodable, Identifiable, Hashable {
+    
+    static let bread2025Id: String = "ph_bread_2025"
+    
     // MARK: - Properties
     @Attribute(.unique) var id: String
     var type: ReadingPlanType

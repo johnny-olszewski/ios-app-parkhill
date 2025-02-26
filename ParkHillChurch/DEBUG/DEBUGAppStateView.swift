@@ -13,13 +13,13 @@ import SwiftData
 struct DEBUGAppStateView: View {
     
     @Environment(\.modelContext) var modelContext
-    @Binding var debugAppState: DEBUGAppState
+    @StateObject var debugContextManager: DEBUGContextManager = .shared
     @Query(sort: \BreadReadingPlan.name) var breadPlans: [BreadReadingPlan]
 
     var body: some View {
         NavigationStack {
             List {
-                Toggle("Debug Reading Plan Provider", isOn: $debugAppState.isUsingDebugReadingPlanProvider)
+                Toggle("Debug Reading Plan Provider", isOn: $debugContextManager.isUsingDebugReadingPlanProvider)
                     .padding()
                 
                 Section("Objects") {

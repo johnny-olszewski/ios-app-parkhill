@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReadingPlanDaySelectorView: View {
     
-    let readingPlan: ReadingPlan
+    let readingPlan: BreadReadingPlan
     
     @Binding var isPresented: Bool
     @Binding var selectedDay: Int?

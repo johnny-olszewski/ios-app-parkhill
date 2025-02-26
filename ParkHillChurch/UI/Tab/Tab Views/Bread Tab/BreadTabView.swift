@@ -9,22 +9,16 @@ import SwiftUI
 
 struct BreadTabView: View {
     
-#if DEBUG
-    @Environment(\.debugAppState) private var debugAppState
-#endif
-    
     @Environment(\.modelContext) var modelContext
     
     var body: some View {
-        NavigationStack {
-            ReadingPlanView(readingPlanManager: generateReadingPlanManager())
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Image(systemName: "person.circle")
-                            .font(.system(size: 18))
-                    }
-                }
-        }
+        
+        ReadingPlanView(
+            readingPlanManager: ManagerFactory.generateReadingPlanManager(
+                planId: BreadReadingPlan.bread2025Id,
+                modelContext: modelContext
+            )
+        )
     }
     
     @ViewBuilder var content: some View {
@@ -32,19 +26,6 @@ struct BreadTabView: View {
         VStack {
             
         }
-    }
-    
-    private func generateReadingPlanManager() -> ReadingPlanManager {
-        
-#if DEBUG
-        return  DEBUGReadingPlanManager(
-            planId: ParkHillSharedConstants.ReadingPlan.bread2025Id,
-            modelContext: modelContext,
-            shouldUseDebugReadingPlanManager: debugAppState.isUsingDebugReadingPlanProvider
-        )
-#else
-        return  ReadingPlanManager(planId: ParkHillSharedConstants.ReadingPlan.bread2025Id, modelContext: modelContext)
-#endif
     }
 }
 
