@@ -13,7 +13,7 @@ struct ReadingPlanView: View {
     private enum Constants {
         struct HeaderGradient {
             static let startingColor: Color = .bread
-            static let endingColor: Color = .black.opacity(0.5)
+            static let endingColor: Color = .white
             static let startingOpacity: CGFloat = 0.95
             static let endingOpacity: CGFloat = 0.8
             static let startingPoint: UnitPoint = .init(x: 0.5, y: -0.5)
@@ -32,7 +32,7 @@ struct ReadingPlanView: View {
     @ObservedObject var readingPlanManager: ReadingPlanManager
     
     @State private var isShowingHeader: Bool = false
-    @State private var headerTransitionCompletion: CGFloat = 0
+    @State private var headerIsTransitioning: Bool = false
     
     @State private var selectedViewType: ViewType = .list
     
@@ -47,7 +47,7 @@ struct ReadingPlanView: View {
             startPoint: Constants.HeaderGradient.startingPoint,
             endPoint: .init(
                 x: Constants.HeaderGradient.endingPointX,
-                y: Constants.HeaderGradient.endingPointY * headerTransitionCompletion
+                y: Constants.HeaderGradient.endingPointY //* headerTransitionCompletion
             )
         )
     }
@@ -84,10 +84,20 @@ struct ReadingPlanView: View {
                     }
                     .ignoresSafeArea(edges: .top)
                     .onScrollGeometryChange(
-                        for: CGFloat.self,
+                        for: CGFloat?.self,
                         of: { scrollGeometry in
-                            let offset = scrollGeometry.contentOffset.y + scrollGeometry.contentInsets.top
-                            return offset
+                            let offsetY = scrollGeometry.contentOffset.y
+                            let contentHeight = scrollGeometry.contentSize.height
+                            let viewportHeight = scrollGeometry.bounds.height
+                            
+                            let maxOffset = contentHeight - viewportHeight
+                            let overshoot = offsetY - maxOffset
+                            
+                            if overshoot > 0 {
+                                return nil
+                            }
+                            
+                            return offsetY
                         },
                         action: { oldOffset, newOffset in
                             handleScrollGeometryChange(oldOffset, newOffset)
@@ -109,37 +119,42 @@ struct ReadingPlanView: View {
 
 extension ReadingPlanView {
     
+    @ViewBuilder
     private func renderHeader(_ title: String) -> some View {
         Text(title.uppercased())
             .frame(maxWidth: .infinity, alignment: .center)
             .monospacedDigit()
             .font(.largeTitle)
             .kerning(15)
-            .foregroundStyle(.white.opacity(headerTransitionCompletion))
+            .foregroundStyle(.white)
             .padding(.vertical, 20)
             .frame(maxWidth: .infinity)
-            .background(headerGradient.opacity((headerTransitionCompletion)))
+            .background(self.headerGradient)
+            .transition(.move(edge: .top))
+            .offset(y: isShowingHeader ? 0 : -200)
     }
     
-    func handleScrollGeometryChange(_ oldOffset: CGFloat, _ newOffset: CGFloat) {
-        let bottomHeaderLimit: CGFloat = 50
-        let topHeaderLimit: CGFloat = 140
-        let headerLimitRange: CGFloat = bottomHeaderLimit - topHeaderLimit // 110 - 140 = -30
+    func handleScrollGeometryChange(_ oldOffset: CGFloat?, _ newOffset: CGFloat?) {
         
-        var newOpacity: CGFloat = 0
-        
-        if newOffset >= bottomHeaderLimit {
-            // e.g. offset in [110 ... 140]
-            newOpacity = abs((newOffset - bottomHeaderLimit) / headerLimitRange)
-            
-            // Also clamp to 0...1 if you don't want it to exceed
-            newOpacity = min(max(newOpacity, 0), 1)
-        } else {
-            // If offset < 110, fully transparent
-            newOpacity = 0
+        guard let newOffset, let oldOffset else {
+            isShowingHeader = false
+            return
         }
         
-        headerTransitionCompletion = newOpacity
+        guard !headerIsTransitioning else {
+            return
+        }
+        
+        let bottomHeaderLimit: CGFloat = 50
+        
+        let shouldShowHeader = oldOffset > newOffset && newOffset > bottomHeaderLimit
+        
+        withAnimation(.smooth) {
+            headerIsTransitioning = true
+            if isShowingHeader != shouldShowHeader { isShowingHeader.toggle() }
+        } completion: {
+            headerIsTransitioning = false
+        }
     }
 }
 
