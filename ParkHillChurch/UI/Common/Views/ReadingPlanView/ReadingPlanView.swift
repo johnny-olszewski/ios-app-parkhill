@@ -20,11 +20,18 @@ struct ReadingPlanView: View {
             static let endingPointX: CGFloat = 0.7
             static let endingPointY: CGFloat = 2
             
-            static let height: CGFloat = 150
+            static let textKerning: CGFloat = 15
+            static let textVerticalPadding: CGFloat = 20
+            static let textOffset: CGFloat = -200
+            
+            static let bottomLimit: CGFloat = 50
         }
         
-        static let headerImageName = "bread_cover"
+        static let headerImageName: String = "bread_cover"
         static let headerSubtitle: String = "Park Hill Church"
+        
+        static let defaultTitle: String = "Reading Plan"
+        static let defaultPlanDescription: String = ""
     }
     
     @Environment(\.modelContext) var modelContext
@@ -38,19 +45,17 @@ struct ReadingPlanView: View {
     
     @State private var path: NavigationPath = .init()
     
-    var headerGradient: LinearGradient {
-        return .init(
-            colors: [
-                Constants.HeaderGradient.startingColor.opacity(Constants.HeaderGradient.startingOpacity),
-                Constants.HeaderGradient.endingColor.opacity(Constants.HeaderGradient.endingOpacity)
-            ],
-            startPoint: Constants.HeaderGradient.startingPoint,
-            endPoint: .init(
-                x: Constants.HeaderGradient.endingPointX,
-                y: Constants.HeaderGradient.endingPointY //* headerTransitionCompletion
-            )
+    var headerGradient: LinearGradient = .init(
+        colors: [
+            Constants.HeaderGradient.startingColor.opacity(Constants.HeaderGradient.startingOpacity),
+            Constants.HeaderGradient.endingColor.opacity(Constants.HeaderGradient.endingOpacity)
+        ],
+        startPoint: Constants.HeaderGradient.startingPoint,
+        endPoint: .init(
+            x: Constants.HeaderGradient.endingPointX,
+            y: Constants.HeaderGradient.endingPointY
         )
-    }
+    )
     
     init(readingPlanManager: ReadingPlanManager) {
         self.readingPlanManager = readingPlanManager
@@ -63,17 +68,17 @@ struct ReadingPlanView: View {
             if let readingPlan = readingPlanManager.readingPlan {
                 
                 ZStack(alignment: .top) {
+                    
                     Color.primaryBackground.ignoresSafeArea()
                     
                     ScrollView {
-                        
                         LazyVStack {
                             
                             ReadingPlanHeader(
                                 imageName: Constants.headerImageName,
-                                title: readingPlanManager.readingPlan?.name ?? "No Title",
+                                title: readingPlanManager.readingPlan?.name ?? Constants.defaultTitle,
                                 subtitle: Constants.headerSubtitle,
-                                caption: readingPlanManager.readingPlan?.planDescription ?? "No Description",
+                                caption: readingPlanManager.readingPlan?.planDescription ?? Constants.defaultPlanDescription,
                                 selectedViewType: $selectedViewType
                             )
                             
@@ -93,6 +98,7 @@ struct ReadingPlanView: View {
                             let maxOffset = contentHeight - viewportHeight
                             let overshoot = offsetY - maxOffset
                             
+                            // if rubberbanding
                             if overshoot > 0 {
                                 return nil
                             }
@@ -125,13 +131,13 @@ extension ReadingPlanView {
             .frame(maxWidth: .infinity, alignment: .center)
             .monospacedDigit()
             .font(.largeTitle)
-            .kerning(15)
+            .kerning(Constants.HeaderGradient.textKerning)
             .foregroundStyle(.white)
-            .padding(.vertical, 20)
+            .padding(.vertical, Constants.HeaderGradient.textVerticalPadding)
             .frame(maxWidth: .infinity)
             .background(self.headerGradient)
             .transition(.move(edge: .top))
-            .offset(y: isShowingHeader ? 0 : -200)
+            .offset(y: isShowingHeader ? 0 : Constants.HeaderGradient.textOffset)
     }
     
     func handleScrollGeometryChange(_ oldOffset: CGFloat?, _ newOffset: CGFloat?) {
@@ -145,7 +151,7 @@ extension ReadingPlanView {
             return
         }
         
-        let bottomHeaderLimit: CGFloat = 50
+        let bottomHeaderLimit: CGFloat = Constants.HeaderGradient.bottomLimit
         
         let shouldShowHeader = oldOffset > newOffset && newOffset > bottomHeaderLimit
         
